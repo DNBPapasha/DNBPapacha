@@ -1,0 +1,3296 @@
+<!DOCTYPE html>  
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAPA drop</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #1a1d24;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 90px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #232730;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffb700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .logo span { color: #fff; }
+
+        /* ИНДИКАТОР ОНЛАЙНА */
+        .online-counter {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #28a745;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #28a745;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0 { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .promo-box {
+            display: flex;
+            gap: 5px;
+        }
+
+        .promo-box input {
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #fff;
+            outline: none;
+            width: 110px;
+        }
+
+        .promo-box button {
+            background: #ffb700;
+            border: none;
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .promo-box button:hover { background: #ffa200; }
+
+        .balance-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .balance-box {
+            background: #1a1d24;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #3a3f4d;
+            font-size: 16px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-deposit-trigger {
+            background: #28a745;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+        .btn-deposit-trigger:hover { background: #218838; }
+
+        /* КНОПКА ВХОДА ЧЕРЕЗ СТИМ */
+        .btn-steam-login {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1b2838;
+            border: 1px solid #4a6fa5;
+            color: #c6d4df;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-steam-login:hover {
+            background: #2a475e;
+            border-color: #66c0f4;
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(102,192,244,0.25);
+        }
+        .steam-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1b2838;
+            border: 1px solid #4a6fa5;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #c6d4df;
+        }
+        .steam-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg, #66c0f4, #1b2838);
+            display: flex; align-items: center; justify-content: center; font-size: 14px;
+        }
+        .btn-steam-logout {
+            background: none; border: none; color: #8a92a3; cursor: pointer;
+            font-size: 16px; padding: 0 0 0 6px; line-height: 1;
+        }
+        .btn-steam-logout:hover { color: #eb4b4b; }
+
+        /* ПОЛЕ ТРЕЙД-ССЫЛКИ */
+        .trade-url-block {
+            background: #1b2838;
+            border: 1px solid #4a6fa5;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 22px;
+        }
+        .trade-url-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #c6d4df;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .trade-url-hint {
+            position: relative;
+            display: inline-block;
+        }
+        .trade-url-hint-btn {
+            background: none;
+            border: 1px solid #4a6fa5;
+            color: #66c0f4;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .trade-url-hint-btn:hover { background: rgba(102,192,244,0.12); border-color: #66c0f4; }
+        .trade-url-tooltip {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: calc(100% + 8px);
+            background: #13161c;
+            border: 1px solid #4a6fa5;
+            border-radius: 10px;
+            padding: 14px 16px;
+            width: 320px;
+            z-index: 500;
+            font-size: 12px;
+            color: #c6d4df;
+            line-height: 1.6;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+        .trade-url-hint:hover .trade-url-tooltip { display: block; }
+        .trade-url-tooltip ol { padding-left: 16px; }
+        .trade-url-tooltip li { margin-bottom: 5px; }
+        .trade-url-tooltip a { color: #66c0f4; }
+        .trade-url-row {
+            display: flex; gap: 8px;
+        }
+        .trade-url-input {
+            flex: 1;
+            background: #13161c;
+            border: 1px solid #4a6fa5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .trade-url-input:focus { border-color: #66c0f4; }
+        .trade-url-input::placeholder { color: #4a5568; }
+        .btn-save-trade-url {
+            background: #1b4f72;
+            border: 1px solid #4a6fa5;
+            color: #66c0f4;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-save-trade-url:hover { background: #2a6496; color: #fff; }
+        .trade-url-status {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            min-height: 16px;
+        }
+
+        .balance-box.bonus {
+            border-color: #00e5ff;
+            box-shadow: inset 0 0 5px rgba(0,229,255,0.2);
+        }
+
+        /* ГЛАВНЫЙ КОНТЕЙНЕР LAYOUT */
+        .main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* ЛЕНТА АКТИВНОСТИ */
+        .live-feed-sidebar {
+            width: 220px;
+            background: #1f232e;
+            border-radius: 14px;
+            border: 1px solid #2d3242;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            align-self: flex-start;
+            position: sticky;
+            top: 20px;
+        }
+
+        .live-feed-title {
+            background: #161922;
+            padding: 14px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #ffb700;
+            text-align: center;
+            letter-spacing: 1.2px;
+            border-bottom: 2px solid #2d3242;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .live-feed-title span.live-badge {
+            color: #eb4b4b;
+            animation: blinker 1.5s linear infinite;
+        }
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        .live-feed-list {
+            display: flex;
+            flex-direction: column;
+            height: 720px;
+            max-height: 720px;
+            overflow: hidden;
+            background: #171a21;
+            position: relative;
+        }
+
+        .feed-item {
+            height: 90px;
+            min-height: 90px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border-bottom: 1px solid #232733;
+            padding: 10px 8px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            animation: feedSlideIn 0.3s ease-out;
+        }
+
+        @keyframes feedSlideIn {
+            from { opacity: 0; transform: translateY(-90px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feed-item-info {
+            font-size: 9px;
+            font-weight: 700;
+            color: #798296;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            z-index: 2;
+            margin-bottom: 1px;
+        }
+
+        .feed-item-skin {
+            font-size: 11px;
+            font-weight: bold;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            z-index: 2;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .feed-item img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            z-index: 1;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.5));
+            transition: transform 0.2s;
+        }
+        .feed-item:hover img { transform: scale(1.1); }
+
+        .feed-rarity-common { background: linear-gradient(180deg, rgba(176, 195, 217, 0.1) 0%, #171a21 100%); border-left: 4px solid #b0c3d9; }
+        .feed-rarity-uncommon { background: linear-gradient(180deg, rgba(94, 152, 217, 0.1) 0%, #171a21 100%); border-left: 4px solid #5e98d9; }
+        .feed-rarity-classified { background: linear-gradient(180deg, rgba(211, 44, 230, 0.1) 0%, #171a21 100%); border-left: 4px solid #d32ce6; }
+        .feed-rarity-covert { background: linear-gradient(180deg, rgba(235, 75, 75, 0.1) 0%, #171a21 100%); border-left: 4px solid #eb4b4b; }
+        .feed-rarity-gold { background: linear-gradient(180deg, rgba(255, 183, 0, 0.15) 0%, #171a21 100%); border-left: 4px solid #ffb700; box-shadow: inset 5px 0 10px rgba(255, 183, 0, 0.05); }
+
+        .player-drop {
+            box-shadow: inset 0 0 15px rgba(255, 183, 0, 0.25);
+            border-right: 2px solid #ffb700;
+        }
+
+        /* КОНТЕНТНАЯ ОБЛАСТЬ СПРАВА */
+        .content-area {
+            flex-grow: 1;
+            width: calc(100% - 240px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stats-bar {
+            width: 100%;
+            background: #232730;
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            border-bottom: 2px solid #3a3f4d;
+        }
+
+        .stat-item { font-size: 13px; color: #8a92a3; }
+        .stat-item span { display: block; font-size: 16px; font-weight: bold; color: #fff; margin-top: 2px; }
+
+        .navigation-tabs { display: flex; gap: 10px; width: 100%; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;}
+        .tab-btn { background: #232730; border: 1px solid #3a3f4d; color: #8a92a3; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: all 0.2s; text-transform: uppercase; white-space: nowrap; }
+        .tab-btn.active { background: #ffb700; color: #000; border-color: #ffb700; box-shadow: 0 4px 15px rgba(255, 183, 0, 0.2); }
+
+        .page { display: none; width: 100%; }
+        .page.active { display: block; }
+        .section-title { font-size: 14px; color: #8a92a3; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 15px; margin-bottom: 15px; font-weight: bold; border-left: 4px solid #ffb700; padding-left: 10px; }
+
+        /* КАРТОЧКА КЕЙСА */
+        .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 15px; margin-bottom: 35px; }
+        .case-card { 
+            background: #232730; 
+            border: 2px solid transparent; 
+            border-radius: 12px; 
+            padding: 18px 12px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.2s ease-in-out; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            align-items: center; 
+            min-height: 190px; 
+        }
+        .case-card:hover { transform: translateY(-3px); background: #2b303c; border-color: #ffb700; }
+        .case-card.bonus-case-style:hover { border-color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+
+        .case-card-header-info {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .case-card h3 { font-size: 13px; margin-bottom: 6px; height: 34px; display: flex; align-items: center; justify-content: center; color: #fff; }
+        .case-card p { color: #ffb700; font-weight: bold; background: rgba(255, 183, 0, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 13px; display: inline-block; }
+        .case-card.bonus-case-style p { color: #00e5ff; background: rgba(0, 229, 255, 0.1); }
+        .case-icon { font-size: 45px; margin-top: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); display: flex; align-items: center; justify-content: center; }
+        .case-icon img { width: 90px; height: 90px; object-fit: contain; transition: transform 0.2s; }
+        .case-card:hover .case-icon img { transform: scale(1.08) translateY(-2px); }
+
+        /* НАВИГАЦИЯ НАЗАД */
+        .back-nav-container { width: 100%; display: flex; margin-bottom: 20px; }
+        .btn-back-to-list { background: #232730; border: 1px solid #3a3f4d; color: #8a92a3; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .btn-back-to-list:hover { color: #fff; border-color: #ffb700; background: #2b303c; }
+
+        /* РУЛЕТКА */
+        .roulette-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 35px; width: 100%; }
+
+        /* Выбор количества кейсов */
+        .multi-open-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; background: #1e222b; padding: 10px 18px; border-radius: 10px; border: 1px solid #2d3242; }
+        .multi-open-label { font-size: 12px; color: #8a92a3; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+        .multi-open-btns { display: flex; gap: 6px; }
+        .multi-btn { width: 40px; height: 40px; background: #232730; border: 2px solid #3a3f4d; color: #8a92a3; border-radius: 8px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.15s; }
+        .multi-btn:hover { border-color: #ffb700; color: #fff; background: #2b303c; }
+        .multi-btn.active { background: #ffb700; border-color: #ffb700; color: #000; box-shadow: 0 0 12px rgba(255,183,0,0.35); }
+
+        /* Стек рулеток */
+        .roulettes-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 800px; }
+        .roulette-wrapper { position: relative; width: 100%; background: #232730; padding: 14px 20px; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+        .pointer { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: #ffb700; z-index: 10; box-shadow: 0 0 10px #ffb700; }
+        .roulette-window { width: 100%; height: 140px; overflow: hidden; position: relative; border-radius: 8px; background: #13161c; }
+        .roulette-track { display: flex; position: absolute; left: 0; top: 0; height: 100%; will-change: transform; }
+
+        /* ЭЛЕМЕНТ РУЛЕТКИ */
+        .item-card { 
+            flex-shrink: 0; 
+            width: 130px; 
+            height: 140px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            align-items: center; 
+            padding: 10px; 
+            text-align: center; 
+            font-size: 11px; 
+            /* separator via outline, not border — не ломает border-bottom редкости */
+            outline: 1px solid #1a1d24;
+            border-bottom: 4px solid transparent;
+            background: linear-gradient(180deg, #232730 0%, #171a21 100%); 
+        }
+        .item-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; margin-bottom: 2px; color: #fff; }
+        .item-price { color: #ffb700; font-weight: bold; margin-bottom: 8px; }
+        .item-card img { width: 60px; height: 60px; object-fit: contain; margin-top: auto; }
+
+        .rarity-common    { border-bottom: 4px solid #b0c3d9; }
+        .rarity-uncommon  { border-bottom: 4px solid #5e98d9; }
+        .rarity-restricted{ border-bottom: 4px solid #8847ff; }
+        .rarity-classified{ border-bottom: 4px solid #d32ce6; }
+        .rarity-covert    { border-bottom: 4px solid #eb4b4b; }
+        .rarity-gold      { border-bottom: 4px solid #ffb700; }
+
+        .btn-open { background: linear-gradient(135deg, #ffb700 0%, #ff8800 100%); color: #000; border: none; padding: 16px 70px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; display: block; margin: 0 auto;}
+        .btn-open:disabled { background: #4a4f5d; color: #8a92a3; cursor: not-allowed; }
+
+        /* СОДЕРЖИМОЕ КЕЙСА */
+        .case-contents-block { width: 100%; background: #1e222b; border-radius: 14px; padding: 25px; margin-top: 35px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        .contents-title { text-align: center; font-size: 16px; font-weight: bold; color: #8a92a3; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; position: relative; }
+        .contents-title::after { content: ''; display: block; width: 60px; height: 2px; background: #ffb700; margin: 8px auto 0 auto; }
+        .contents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        
+        .content-item-card { 
+            background: #232730; 
+            border-radius: 8px; 
+            padding: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            min-height: 165px; 
+            position: relative; 
+            transition: transform 0.2s; 
+            border-bottom: 4px solid #fff; 
+        }
+        .content-item-card:hover { transform: scale(1.03); }
+        .content-item-card .card-name-box { text-align: center; width: 100%; margin-bottom: 10px; }
+        .content-item-card .card-weapon { font-size: 11px; color: #8a92a3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .content-item-card .card-skin { font-size: 12px; font-weight: bold; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+        .content-item-card .card-price { font-size: 11px; font-weight: bold; color: #ff9d00; background: rgba(0, 0, 0, 0.3); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; }
+        .content-item-card img { width: 70px; height: 70px; object-fit: contain; margin-top: auto; }
+
+        /* МОДУЛЬ АПГРЕЙДОВ */
+        .upgrade-grid { display: grid; grid-template-columns: 1fr 260px 1fr; gap: 20px; align-items: start; }
+        .upgrade-side { background: #232730; padding: 20px; border-radius: 12px; min-height: 420px; display: flex; flex-direction: column; }
+        .upgrade-selector-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; max-height: 340px; overflow-y: auto; margin-top: 10px; padding-right: 5px; }
+
+        /* МИНИ КАРТОЧКА СКИНОК */
+        .mini-skin-card { 
+            background: #171a21; 
+            padding: 8px; 
+            border-radius: 6px; 
+            text-align: center; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 10px; 
+            cursor: pointer; 
+            border-bottom: 3px solid #3a3f4d; 
+            transition: transform 0.1s; 
+            min-height: 100px;
+        }
+        .mini-skin-card:hover { transform: scale(1.03); }
+        .mini-skin-card.selected { border-color: #ffb700; background: #2b303c; }
+        .mini-skin-info-top { width: 100%; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+        .mini-skin-price-top { color: #28a745; font-weight: bold; margin-bottom: 4px; }
+        .mini-skin-card img { width: 45px; height: 45px; object-fit: contain; margin-top: auto; }
+
+        .upgrade-center { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #232730; padding: 20px; border-radius: 12px; min-height: 420px; text-align: center; }
+
+        /* ПАНЕЛЬ БУСТА ШАНСА */
+        .boost-panel {
+            width: 100%;
+            background: #171a21;
+            border: 1px solid #2d3242;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 10px 0 4px 0;
+        }
+        .boost-panel-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #8a92a3;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .boost-panel-title span { color: #ffb700; }
+        .boost-presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+        .boost-btn {
+            background: linear-gradient(135deg, #1e2435 0%, #252b3d 100%);
+            border: 1px solid #3a4260;
+            color: #c0cde0;
+            border-radius: 8px;
+            padding: 9px 6px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .boost-btn:hover {
+            border-color: #ffb700;
+            color: #ffb700;
+            background: linear-gradient(135deg, #272c3d 0%, #2e3450 100%);
+            box-shadow: 0 0 10px rgba(255,183,0,0.2);
+            transform: translateY(-1px);
+        }
+        .boost-btn:active { transform: translateY(0); }
+        .boost-btn.active { background: linear-gradient(135deg, #b37800, #ffb700); border-color: #ffb700; color: #1a1d24; box-shadow: 0 0 12px rgba(255,183,0,0.4); }
+        .boost-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .boost-btn .boost-plus { font-size: 15px; display: block; }
+        .boost-btn .boost-cost { font-size: 10px; opacity: 0.8; }
+
+        .boost-slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .boost-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: #2a2e3e;
+            outline: none;
+            cursor: pointer;
+        }
+        .boost-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffb700;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255,183,0,0.5);
+        }
+        .boost-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffb700;
+            cursor: pointer;
+            border: none;
+        }
+        .boost-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8a92a3;
+        }
+        .boost-info .boost-added { color: #28a745; font-weight: 700; }
+        .boost-info .boost-cost-display { color: #ffb700; font-weight: 700; }
+        .boost-reset-btn {
+            background: none;
+            border: 1px solid #3a4060;
+            color: #8a92a3;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .boost-reset-btn:hover { border-color: #eb4b4b; color: #eb4b4b; }
+        .chance-display { font-size: 36px; font-weight: bold; color: #ffb700; margin: 20px 0; text-shadow: 0 0 15px rgba(255, 183, 0, 0.3); }
+        .upgrade-vs { display: flex; justify-content: space-around; width: 100%; margin-bottom: 20px; }
+        
+        /* КОЛЕСО ШАНСОВ */
+        .wheel-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 10px auto 18px auto;
+            flex-shrink: 0;
+        }
+        #upgradeWheelCanvas {
+            display: block;
+            border-radius: 50%;
+        }
+        .wheel-center-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            width: 130px;
+        }
+        .wheel-percent {
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            letter-spacing: -0.5px;
+        }
+        .wheel-label {
+            font-size: 11px;
+            color: #b0c3d9;
+            margin-top: 4px;
+            font-weight: 600;
+            text-transform: lowercase;
+            letter-spacing: 0.3px;
+        }
+        .wheel-arrow {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffb700;
+            font-size: 18px;
+            filter: drop-shadow(0 0 6px #ffb700);
+            z-index: 5;
+        }
+        .wheel-side-label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: #8a92a3;
+        }
+        .wheel-side-label.left { left: -26px; }
+        .wheel-side-label.right { right: -34px; }
+        
+        .vs-box { width: 90px; height: 110px; background: #171a21; border-radius: 8px; padding: 8px; font-size: 9px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; border: 1px dashed #4a4f5d; text-align: center; }
+        .vs-box .vs-title { font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; margin-bottom: 2px; }
+        .vs-box .vs-price { color: #28a745; font-weight: bold; margin-bottom: 4px; }
+        .vs-box img { width: 45px; height: 45px; object-fit: contain; margin-top: auto; }
+
+        .btn-upgrade { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); color: #fff !important; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; text-transform: uppercase; }
+        .btn-upgrade:disabled { background: #4a4f5d; cursor: not-allowed; color: #8a92a3 !important; }
+
+        .btn-contract { background: linear-gradient(135deg, #a800ff 0%, #7000ff 100%); color: #fff !important; border: none; padding: 14px 30px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; text-transform: uppercase; margin-top: 15px;}
+        .btn-contract:disabled { background: #4a4f5d; cursor: not-allowed; color: #8a92a3 !important; }
+
+        /* PvP БАТТЛЫ */
+        .battle-setup { background: #232730; padding: 20px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .battle-setup select { background: #1a1d24; border: 1px solid #3a3f4d; color: white; padding: 10px; border-radius: 6px; outline: none; font-size: 14px; }
+        .btn-battle-start { background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%); color: #000; border: none; padding: 12px 35px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        
+        .battle-arena { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .battle-user-column { background: #232730; padding: 20px; border-radius: 12px; border: 1px solid #3a3f4d; min-height: 300px; }
+        .battle-user-info { display: flex; justify-content: space-between; font-weight: bold; border-bottom: 2px solid #3a3f4d; padding-bottom: 10px; margin-bottom: 15px; }
+        .battle-total-score { color: #ffb700; }
+        .battle-drops-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+
+        /* ИНВЕНТАРЬ И ВЫВОД */
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .inventory-card { 
+            background: #232730; 
+            border-radius: 8px; 
+            padding: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+            min-height: 180px; 
+            border-bottom: 4px solid #fff; 
+            text-align: center;
+        }
+        .inv-name { font-weight: bold; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; margin-bottom: 2px; color: #fff; }
+        .inv-price { color: #28a745; margin: 0 0 8px 0; font-weight: bold; font-size: 12px; }
+        .inventory-card img { width: 55px; height: 55px; object-fit: contain; margin-top: auto; margin-bottom: 10px; }
+        .btn-sell { background: #dc3545; border: none; color: #fff; padding: 6px 8px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 11px; transition: background 0.1s; }
+        .btn-sell:hover { background: #bd2130; }
+        .btn-withdraw-action { background: #28a745; border: none; color: #fff; padding: 6px 8px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 11px; transition: background 0.1s; }
+        .btn-withdraw-action:hover { background: #218838; }
+
+        .logs-box { background: #13161c; border-radius: 8px; padding: 15px; max-height: 360px; overflow-y: auto; font-family: monospace; font-size: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid #3a3f4d; }
+        .log-line { padding: 6px; border-radius: 4px; background: #1a1d24; border-left: 3px solid #ffb700; }
+
+        /* СИСТЕМА ТЕХПОДДЕРЖКИ */
+        .support-btn { position: fixed; bottom: 20px; right: 20px; background: #ffb700; color: #000; border: none; padding: 14px 22px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 6px 20px rgba(255,183,0,0.4); z-index: 1000; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: transform 0.2s; }
+        .support-btn:hover { transform: scale(1.05); }
+        .support-chat { position: fixed; bottom: 85px; right: 20px; width: 330px; height: 420px; background: #232730; border-radius: 12px; border: 1px solid #3a3f4d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 1000; display: none; flex-direction: column; overflow: hidden; }
+        .support-header { background: #1e222b; padding: 15px; font-weight: bold; border-bottom: 1px solid #3a3f4d; display: flex; justify-content: space-between; align-items: center; }
+        .support-close { cursor: pointer; color: #8a92a3; font-size: 18px; }
+        .support-messages { flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+        .msg { padding: 10px 12px; border-radius: 8px; max-width: 85%; line-height: 1.4; }
+        .msg.bot { background: #1a1d24; align-self: flex-start; color: #ffb700; border-left: 3px solid #ffb700; font-weight: 500; }
+        .msg.user { background: #ffb700; align-self: flex-end; color: #000; font-weight: 500; }
+        .support-input-area { padding: 10px; background: #1e222b; border-top: 1px solid #3a3f4d; display: flex; gap: 5px; }
+        .support-input-area input { flex-grow: 1; background: #1a1d24; border: 1px solid #3a3f4d; color: white; padding: 8px; border-radius: 4px; outline: none; }
+        .support-input-area button { background: #ffb700; border: none; padding: 0 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        /* СТИЛИ МОДАЛЬНОГО ОКНА ПОПОЛНЕНИЯ БАЛАНСА */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .deposit-modal-content {
+            background: #232730;
+            border: 2px solid #3a3f4d;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            position: relative;
+            animation: modalFadeIn 0.25s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 26px;
+            cursor: pointer;
+            color: #8a92a3;
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover { color: #fff; }
+
+        .deposit-modal-content h3 {
+            color: #ffb700;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .modal-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-field-group label {
+            font-size: 12px;
+            color: #8a92a3;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-field-group input {
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .modal-field-group input:focus { border-color: #ffb700; }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .payment-method-card {
+            background: #171a21;
+            border: 1px solid #3a3f4d;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cdcdcd;
+        }
+
+        .payment-method-card:hover {
+            border-color: #ffb700;
+            background: #1c2029;
+            color: #fff;
+        }
+
+        .payment-method-card.active {
+            border-color: #ffb700;
+            background: rgba(255, 183, 0, 0.08);
+            color: #ffb700;
+            box-shadow: inset 0 0 10px rgba(255, 183, 0, 0.1);
+        }
+
+        .btn-modal-pay {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-modal-pay:hover {
+            background: linear-gradient(135deg, #218838 0%, #1c692c 100%);
+        }
+        .btn-modal-pay:active { transform: scale(0.98); }
+
+        /* ОВЕРЛЕЙ РЕЗУЛЬТАТА АПГРЕЙДА */
+        .upgrade-result-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            backdrop-filter: blur(6px);
+            animation: upgradeOverlayIn 0.3s ease-out;
+        }
+        .upgrade-result-overlay.win { background: rgba(0, 0, 0, 0.82); }
+        .upgrade-result-overlay.lose { background: rgba(0, 0, 0, 0.88); }
+
+        @keyframes upgradeOverlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .upgrade-result-box {
+            text-align: center;
+            padding: 50px 60px;
+            border-radius: 24px;
+            max-width: 480px;
+            width: 90%;
+            position: relative;
+            animation: upgradeBoxPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes upgradeBoxPop {
+            from { opacity: 0; transform: scale(0.6); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .upgrade-result-box.win {
+            background: linear-gradient(145deg, #0f2a1a 0%, #1a3d28 100%);
+            border: 2px solid #28a745;
+            box-shadow: 0 0 60px rgba(40, 167, 69, 0.45), 0 20px 50px rgba(0,0,0,0.6);
+        }
+        .upgrade-result-box.lose {
+            background: linear-gradient(145deg, #2a0f0f 0%, #3d1a1a 100%);
+            border: 2px solid #eb4b4b;
+            box-shadow: 0 0 60px rgba(235, 75, 75, 0.4), 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .upgrade-result-icon {
+            font-size: 72px;
+            margin-bottom: 10px;
+            display: block;
+            animation: upgradeIconBounce 0.6s ease 0.2s both;
+        }
+        @keyframes upgradeIconBounce {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.25); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .upgrade-result-label {
+            font-size: 52px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            line-height: 1;
+            margin-bottom: 10px;
+            animation: upgradeLabelSlide 0.5s ease 0.3s both;
+        }
+        @keyframes upgradeLabelSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .upgrade-result-label.win { color: #28a745; text-shadow: 0 0 30px rgba(40,167,69,0.8); }
+        .upgrade-result-label.lose { color: #eb4b4b; text-shadow: 0 0 30px rgba(235,75,75,0.8); }
+
+        .upgrade-result-skin-name {
+            font-size: 17px;
+            font-weight: bold;
+            color: #fff;
+            margin: 14px 0 6px 0;
+            animation: upgradeLabelSlide 0.5s ease 0.4s both;
+        }
+        .upgrade-result-skin-price {
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            animation: upgradeLabelSlide 0.5s ease 0.45s both;
+        }
+        .upgrade-result-skin-price.win { color: #28a745; }
+        .upgrade-result-skin-price.lose { color: #eb4b4b; }
+
+        .upgrade-result-img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+            margin: 10px auto 20px auto;
+            display: block;
+            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.7));
+            animation: upgradeImgFade 0.5s ease 0.35s both;
+        }
+        @keyframes upgradeImgFade {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .upgrade-result-subtext {
+            font-size: 13px;
+            color: #8a92a3;
+            margin-bottom: 28px;
+            animation: upgradeLabelSlide 0.5s ease 0.5s both;
+        }
+
+        .btn-upgrade-result-close {
+            border: none;
+            padding: 14px 50px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.1s, box-shadow 0.2s;
+            animation: upgradeLabelSlide 0.5s ease 0.55s both;
+        }
+        .btn-upgrade-result-close:hover { transform: scale(1.05); }
+        .btn-upgrade-result-close:active { transform: scale(0.97); }
+        .btn-upgrade-result-close.win {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(40,167,69,0.5);
+        }
+        .btn-upgrade-result-close.lose {
+            background: linear-gradient(135deg, #eb4b4b, #b52a2a);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(235,75,75,0.4);
+        }
+
+        /* Конфетти частицы */
+        .confetti-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+            pointer-events: none;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(300px) rotate(720deg); }
+        }
+
+        /* УВЕДОМЛЕНИЕ О НЕХВАТКЕ БАЛАНСА */
+        .balance-toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: linear-gradient(135deg, #dc3545, #b52a2a);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 8px 30px rgba(220, 53, 69, 0.5);
+            border: 1px solid rgba(255,100,100,0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .balance-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .balance-toast .toast-icon { font-size: 20px; }
+
+        /* ПОИСК И СОРТИРОВКА КЕЙСОВ */
+        .cases-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .cases-search-input {
+            flex: 1;
+            min-width: 180px;
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .cases-search-input:focus { border-color: #ffb700; }
+        .cases-sort-select {
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .cases-sort-select:focus { border-color: #ffb700; }
+
+        /* ПОИСК СКИНОВ В АПГРЕЙДЕ */
+        .upgrade-search-input {
+            width: 100%;
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 8px;
+            transition: border-color 0.2s;
+        }
+        .upgrade-search-input:focus { border-color: #ffb700; }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST УВЕДОМЛЕНИЕ О НЕХВАТКЕ БАЛАНСА -->
+    <div class="balance-toast" id="balanceToast">
+        <span class="toast-icon">⚠️</span>
+        <span id="balanceToastMsg">Недостаточно средств!</span>
+    </div>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo">PAPA<span>drop</span></div>
+            <div class="online-counter">
+                <span class="online-dot"></span>
+                <span>Онлайн: <span id="liveOnlineVal">1</span></span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="promo-box">
+                <input type="text" id="promoInput" placeholder="ПРОМОКОД">
+                <button onclick="activatePromo()">ОК</button>
+            </div>
+            <div class="balance-container">
+                <div class="balance-box">
+                    <span>Баланс: <span id="ui-balance" style="color: #28a745; font-weight: bold;">2500</span> ₽</span>
+                    <button class="btn-deposit-trigger" onclick="openDepositModal()">+ Пополнить</button>
+                </div>
+                <div class="balance-box bonus">Монеты: <span id="ui-bonus" style="color: #00e5ff; font-weight: bold;">500</span> 🪙</div>
+            </div>
+            <!-- STEAM ВХОД -->
+            <div id="steamLoginBtn">
+                <button class="btn-steam-login" onclick="steamLogin()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#66c0f4"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38l3.02-6.24a3.5 3.5 0 0 1-1.02-2.44 3.5 3.5 0 0 1 3.5-3.5 3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5h-.16l-6.13 2.97C8.94 21.6 10.42 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    Войти через Steam
+                </button>
+            </div>
+            <div id="steamUserInfo" style="display:none;">
+                <div class="steam-user-info">
+                    <div class="steam-avatar">🎮</div>
+                    <span id="steamNickname">Игрок</span>
+                    <button class="btn-steam-logout" onclick="steamLogout()" title="Выйти">✕</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <aside class="live-feed-sidebar">
+            <div class="live-feed-title">
+                <span class="live-badge">●</span> Живой дроп сайта
+            </div>
+            <div class="live-feed-list" id="liveFeedList"></div>
+        </aside>
+
+        <main class="content-area">
+            
+            <div class="stats-bar">
+                <div class="stat-item">Кейсов открыто:<span id="statCases">0</span></div>
+                <div class="stat-item">Апгрейдов сделано:<span id="statUpgrades">0</span></div>
+                <div class="stat-item">Выведено в Steam:<span id="statWithdrawn">0 ₽</span></div>
+                <div class="stat-item">Самый дорогой дроп:<span id="statMaxDrop">0 ₽</span></div>
+            </div>
+
+            <div class="navigation-tabs">
+                <button class="tab-btn active" id="tab-cases" onclick="switchPage('cases')">📦 Открытие Кейсов</button>
+                <button class="tab-btn" id="tab-upgrade" onclick="switchPage('upgrade')">⚡ Апгрейд Скинов</button>
+                <button class="tab-btn" id="tab-contracts" onclick="switchPage('contracts')">📜 Контракты Обмена</button>
+                <button class="tab-btn" id="tab-battles" onclick="switchPage('battles')">⚔️ Кейс-Баттлы</button>
+                <button class="tab-btn" id="tab-withdraw" onclick="switchPage('withdraw')">📤 Вывод скинов</button>
+                <button class="tab-btn" id="tab-inventory" onclick="switchPage('inventory')">💼 Мой Инвентарь (<span id="invCountHeader">0</span>)</button>
+            </div>
+
+            <div id="page-cases" class="page active">
+                <div id="casesListView">
+                    <div class="cases-toolbar">
+                        <input class="cases-search-input" type="text" id="casesSearchInput" placeholder="🔍 Поиск кейса по названию...">
+                        <select class="cases-sort-select" id="casesSortSelect" onchange="renderCasesMenu()">
+                            <option value="default">По умолчанию</option>
+                            <option value="price_asc">Цена: по возрастанию</option>
+                            <option value="price_desc">Цена: по убыванию</option>
+                            <option value="name_asc">Название: А → Я</option>
+                            <option value="name_desc">Название: Я → А</option>
+                        </select>
+                    </div>
+                    <div class="section-title">Кейсы за рубли (₽)</div>
+                    <div class="cases-grid" id="rubleCasesGrid"></div>
+
+                    <div class="section-title" style="border-left-color: #00e5ff;">Кейсы за монеты (🪙)</div>
+                    <div class="cases-grid" id="coinCasesGrid"></div>
+                </div>
+
+                <div id="caseDetailView" style="display: none;">
+                    <div class="back-nav-container">
+                        <button class="btn-back-to-list" onclick="returnToCasesList()">← К списку кейсов</button>
+                    </div>
+                    <h2 id="openedCaseTitle" style="text-align: center; margin-bottom: 25px; font-size: 22px; color: #ffb700; text-transform: uppercase;">Название Кейса</h2>
+                    
+                    <div class="roulette-container">
+                        <div class="multi-open-bar">
+                            <span class="multi-open-label">Открыть сразу:</span>
+                            <div class="multi-open-btns">
+                                <button class="multi-btn active" onclick="setMultiCount(1,this)">1</button>
+                                <button class="multi-btn" onclick="setMultiCount(2,this)">2</button>
+                                <button class="multi-btn" onclick="setMultiCount(3,this)">3</button>
+                                <button class="multi-btn" onclick="setMultiCount(4,this)">4</button>
+                                <button class="multi-btn" onclick="setMultiCount(5,this)">5</button>
+                            </div>
+                        </div>
+                        <div class="roulettes-stack" id="roulettesStack">
+                            <!-- рулетки рендерятся динамически -->
+                        </div>
+                        <div style="display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+                            <button class="btn-open" id="openCaseBtn" onclick="spinRoulette()">Открыть кейс</button>
+                            <button class="btn-open" id="quickSpinBtn" onclick="quickSpinRoulette()" style="background: linear-gradient(135deg,#00c6ff,#0072ff); font-size:15px; padding:16px 30px;">⚡ Быстро</button>
+                        </div>
+                    </div>
+
+                    <div class="case-contents-block">
+                        <div class="contents-title">Содержимое кейса</div>
+                        <div class="contents-grid" id="caseContentsGrid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-upgrade" class="page">
+                <div class="section-title">Апгрейд скинов</div>
+                <div class="upgrade-grid">
+                    <div class="upgrade-side">
+                        <h3 style="font-size:14px; margin-bottom:10px;">Выберите ваш предмет:</h3>
+                        <input class="upgrade-search-input" type="text" id="upgradeInventorySearch" placeholder="🔍 Поиск в инвентаре...">
+                        <div class="upgrade-selector-list" id="upgradeInventory"></div>
+                    </div>
+                    <div class="upgrade-center">
+                        <div class="upgrade-vs">
+                            <div class="vs-box" id="vs-source-box">
+                                <div class="vs-title">Ваш предмет</div>
+                                <div class="vs-price">-</div>
+                            </div>
+                            <div style="font-size: 24px; font-weight: bold; display: flex; align-items: center;">VS</div>
+                            <div class="vs-box" id="vs-target-box">
+                                <div class="vs-title">Цель</div>
+                                <div class="vs-price">-</div>
+                            </div>
+                        </div>
+
+                        <!-- КОЛЕСО ШАНСОВ -->
+                        <div class="wheel-wrapper">
+                            <canvas id="upgradeWheelCanvas" width="220" height="220"></canvas>
+                            <div class="wheel-center-text">
+                                <div class="wheel-percent" id="upgradeChanceVal">0%</div>
+                                <div class="wheel-label" id="wheelLabel">выберите предмет</div>
+                            </div>
+                            <!-- Стрелка сверху -->
+                            <div class="wheel-arrow">▼</div>
+                            <!-- Метки 0% и 100% по бокам -->
+                            <div class="wheel-side-label left">0%</div>
+                            <div class="wheel-side-label right">100%</div>
+                        </div>
+
+                        <!-- ПАНЕЛЬ БУСТА ШАНСА -->
+                        <div class="boost-panel" id="boostPanel">
+                            <div class="boost-panel-title">
+                                💸 Добавить рубли к ставке — баланс: <span id="boostBalanceDisplay">0 ₽</span>
+                            </div>
+
+                            <!-- Визуальная формула -->
+                            <div id="boostFormula" style="font-size:11px; color:#8a92a3; margin-bottom:10px; line-height:1.6; background:#13161c; border-radius:8px; padding:8px 12px; text-align:center;">
+                                <span id="boostFormulaText">Выберите скины выше, чтобы увидеть расчёт</span>
+                            </div>
+
+                            <!-- Быстрые пресеты -->
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:10px; width:100%;">
+                                <button class="boost-btn" id="boostPresetBtn10" onclick="applyBoostPreset(0.10)">
+                                    <span style="display:block;font-size:13px;font-weight:800;">+10%</span>
+                                    <span id="boostPresetCost10" style="display:block;font-size:10px;color:#8a92a3;margin-top:2px;">— ₽</span>
+                                </button>
+                                <button class="boost-btn" id="boostPresetBtn25" onclick="applyBoostPreset(0.25)">
+                                    <span style="display:block;font-size:13px;font-weight:800;">+25%</span>
+                                    <span id="boostPresetCost25" style="display:block;font-size:10px;color:#8a92a3;margin-top:2px;">— ₽</span>
+                                </button>
+                                <button class="boost-btn" id="boostPresetBtn50" onclick="applyBoostPreset(0.50)">
+                                    <span style="display:block;font-size:13px;font-weight:800;">+50%</span>
+                                    <span id="boostPresetCost50" style="display:block;font-size:10px;color:#8a92a3;margin-top:2px;">— ₽</span>
+                                </button>
+                                <button class="boost-btn" id="boostPresetBtn95" onclick="applyBoostPreset(0.80)">
+                                    <span style="display:block;font-size:13px;font-weight:800;">+80%</span>
+                                    <span id="boostPresetCost95" style="display:block;font-size:10px;color:#8a92a3;margin-top:2px;">— ₽</span>
+                                </button>
+                            </div>
+
+                            <!-- Ползунок -->
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                                <span style="font-size:11px;color:#8a92a3;white-space:nowrap;">0 ₽</span>
+                                <input class="boost-slider" type="range" id="boostSlider" min="0" max="10000" value="0" step="50"
+                                    oninput="applyBoostRub(parseInt(this.value))">
+                                <span style="font-size:11px;color:#8a92a3;white-space:nowrap;" id="boostSliderMax">10 000 ₽</span>
+                            </div>
+
+                            <div class="boost-info">
+                                <span>Добавлено: <span class="boost-added" id="boostAddedDisplay">+0 ₽</span></span>
+                                <span>Новый шанс: <span class="boost-cost-display" id="boostNewChance">—</span></span>
+                                <button class="boost-reset-btn" onclick="resetBoost()">✕ Сброс</button>
+                            </div>
+                        </div>
+
+                        <button class="btn-upgrade" id="executeUpgradeBtn" disabled onclick="startUpgradeProcess(false)" style="color:#fff;">Начать апгрейд</button>
+                        <button class="btn-upgrade" id="quickUpgradeBtn" disabled onclick="startUpgradeProcess(true)" style="background: linear-gradient(135deg,#00c6ff,#0072ff); margin-top:8px; color:#fff;">⚡ Быстрый апгрейд</button>
+                        <div id="upgradeStatusText" style="margin-top: 15px; font-weight: bold; font-size: 14px;"></div>
+                    </div>
+                    <div class="upgrade-side">
+                        <h3 style="font-size:14px; margin-bottom:10px;">Выберите желаемый скин:</h3>
+                        <input class="upgrade-search-input" type="text" id="upgradeGlobalSearch" placeholder="🔍 Поиск скина...">
+                        <div class="upgrade-selector-list" id="upgradeGlobalSkins"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-contracts" class="page">
+                <div class="section-title">Контракты обмена (выбрано: <span id="contractCount">0</span>/10)</div>
+                <div class="upgrade-grid">
+                    <div class="upgrade-side" style="grid-column: span 2;">
+                        <h3 style="font-size:14px; margin-bottom:10px;">Выберите от 3 до 10 скинов для контракта:</h3>
+                        <div class="upgrade-selector-list" id="contractInventory" style="grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); max-height: 380px;"></div>
+                    </div>
+                    <div class="upgrade-side">
+                        <h3 style="font-size:14px; margin-bottom:15px;">Создание контракта</h3>
+                        <div style="background: #171a21; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px dashed #3a3f4d;">
+                            <div style="color: #8a92a3; font-size: 13px;">Общая сумма вклада:</div>
+                            <div id="contractTotalPrice" style="font-size: 20px; font-weight: bold; color: #ffb700; margin-top: 5px;">0 ₽</div>
+                        </div>
+                        <button class="btn-contract" id="executeContractBtn" disabled onclick="startContractProcess()">Запустить контракт</button>
+                        <div id="contractStatusText" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-battles" class="page">
+                <div class="section-title">Кейс-Баттлы с ботами</div>
+                <div class="battle-setup">
+                    <label style="font-size: 14px; font-weight: bold;">Выберите кейс:</label>
+                    <select id="battleCaseSelect"></select>
+                    <label style="font-size: 14px; font-weight: bold;">Раундов:</label>
+                    <div style="display:flex; gap:6px;">
+                        <button class="multi-btn active" id="battleRndBtn1" onclick="setBattleRounds(1,this)">1</button>
+                        <button class="multi-btn" id="battleRndBtn3" onclick="setBattleRounds(3,this)">3</button>
+                        <button class="multi-btn" id="battleRndBtn5" onclick="setBattleRounds(5,this)">5</button>
+                        <button class="multi-btn" id="battleRndBtn10" onclick="setBattleRounds(10,this)">10</button>
+                    </div>
+                    <button class="btn-battle-start" id="startBattleBtn" onclick="runCaseBattle()">Создать и начать баттл</button>
+                </div>
+                <div class="battle-arena" id="battleArena" style="display: none;">
+                    <div class="battle-user-column">
+                        <div class="battle-user-info"><span>Вы</span><span class="battle-total-score" id="battleUserScore">0 ₽</span></div>
+                        <div class="battle-drops-list" id="battleUserDrops"></div>
+                    </div>
+                    <div class="battle-user-column">
+                        <div class="battle-user-info"><span id="battleBotName">Бот</span><span class="battle-total-score" id="battleBotScore">0 ₽</span></div>
+                        <div class="battle-drops-list" id="battleBotDrops"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-withdraw" class="page">
+                <div class="section-title">Вывод скинов в Steam (Симуляция)</div>
+
+                <!-- БЛОК ТРЕЙД-ССЫЛКИ -->
+                <div class="trade-url-block">
+                    <div class="trade-url-label">
+                        🔗 Трейд-ссылка Steam
+                        <div class="trade-url-hint">
+                            <button class="trade-url-hint-btn">Как получить?</button>
+                            <div class="trade-url-tooltip">
+                                <strong style="color:#66c0f4;">Как получить трейд-ссылку:</strong>
+                                <ol>
+                                    <li>Откройте <a href="https://steamcommunity.com/my/tradeoffers/privacy" target="_blank">steamcommunity.com</a> и войдите в аккаунт</li>
+                                    <li>Перейдите: <strong>Инвентарь → Настройки обмена</strong></li>
+                                    <li>В разделе «Сторонние сайты» нажмите <strong>«Создать новый URL»</strong></li>
+                                    <li>Скопируйте ссылку вида:<br><span style="color:#a3ff70; font-family:monospace; font-size:11px;">https://steamcommunity.com/tradeoffer/new/?partner=…&token=…</span></li>
+                                    <li>Вставьте её в поле ниже и нажмите «Сохранить»</li>
+                                </ol>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trade-url-row">
+                        <input class="trade-url-input" type="text" id="tradeUrlInput"
+                            placeholder="https://steamcommunity.com/tradeoffer/new/?partner=...&token=...">
+                        <button class="btn-save-trade-url" onclick="saveTradeUrl()">Сохранить</button>
+                    </div>
+                    <div class="trade-url-status" id="tradeUrlStatus"></div>
+                </div>
+
+                <div class="upgrade-grid">
+                    <div class="upgrade-side" style="grid-column: span 2;">
+                        <h3 style="font-size:14px; margin-bottom:10px;">Выберите скин для отправки в Steam:</h3>
+                        <div class="upgrade-selector-list" id="withdrawInventory" style="max-height: 420px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));"></div>
+                    </div>
+                    <div class="upgrade-side">
+                        <h3 style="font-size:14px; margin-bottom:10px;">Статус отправки трейдов</h3>
+                        <div class="logs-box" id="withdrawLogs">
+                            <div style="color: #6e7681; text-align: center; margin-top: 20px;">Очередь запросов пуста</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-inventory" class="page">
+                <div class="section-title">Ваш инвентарь предметов</div>
+                <div class="inventory-grid" id="inventoryGrid"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ОВЕРЛЕЙ РЕЗУЛЬТАТА АПГРЕЙДА -->
+    <div class="upgrade-result-overlay" id="upgradeResultOverlay" onclick="closeUpgradeResult()">
+        <div class="upgrade-result-box" id="upgradeResultBox" onclick="event.stopPropagation()">
+            <span class="upgrade-result-icon" id="upgradeResultIcon">🏆</span>
+            <div class="upgrade-result-label" id="upgradeResultLabel">ВЫИГРАЛ!</div>
+            <img class="upgrade-result-img" id="upgradeResultImg" src="" alt="скин">
+            <div class="upgrade-result-skin-name" id="upgradeResultSkinName"></div>
+            <div class="upgrade-result-skin-price" id="upgradeResultSkinPrice"></div>
+            <div class="upgrade-result-subtext" id="upgradeResultSubtext"></div>
+            <button class="btn-upgrade-result-close" id="upgradeResultBtn" onclick="closeUpgradeResult()">Закрыть</button>
+        </div>
+    </div>
+
+    <button class="support-btn" onclick="toggleSupportChat()">💬 Поддержка</button>
+    <div class="support-chat" id="supportChat">
+        <div class="support-header">
+            <span>Техническая поддержка</span>
+            <span class="support-close" onclick="toggleSupportChat()">&times;</span>
+        </div>
+        <div class="support-messages" id="supportMessages">
+            <div class="msg bot" id="supportWelcomeMsg">Внимание! Для активации вывода скинов и разблокировки трейд-сессии вам необходимо верифицировать аккаунт, пополнив баланс на 500 рублей.</div>
+        </div>
+        <div class="support-input-area">
+            <input type="text" id="supportInput" placeholder="Введите сообщение...">
+            <button onclick="sendSupportMessage()">Отправить</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="depositModal">
+        <div class="deposit-modal-content">
+            <span class="modal-close-btn" onclick="closeDepositModal()">&times;</span>
+            <h3>Пополнение баланса</h3>
+            
+            <div class="modal-field-group">
+                <label for="depositAmountInput">Сумма пополнения (₽):</label>
+                <input type="number" id="depositAmountInput" value="500" min="100" step="50">
+            </div>
+
+            <label style="font-size: 12px; color: #8a92a3; text-transform: uppercase; font-weight: bold; display: block; margin-bottom: 8px;">Выберите метод оплаты:</label>
+            <div class="payment-methods-grid">
+                <div class="payment-method-card active" onclick="selectPaymentMethod(this, 'sbp')">
+                    <span style="font-size: 22px;">📲</span>
+                    <span>СБП</span>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod(this, 'card')">
+                    <span style="font-size: 22px;">💳</span>
+                    <span>Карта Мир / Visa</span>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod(this, 'crypto')">
+                    <span style="font-size: 22px;">🪙</span>
+                    <span>Криптовалюта</span>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod(this, 'skins')">
+                    <span style="font-size: 22px;">🎒</span>
+                    <span>Скины Steam</span>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod(this, 'yoomoney')">
+                    <span style="font-size: 22px;">👛</span>
+                    <span>ЮMoney</span>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod(this, 'qiwi')">
+                    <span style="font-size: 22px;">🥝</span>
+                    <span>QIWI</span>
+                </div>
+            </div>
+
+            <button class="btn-modal-pay" onclick="executeModalDeposit()">Перейти к оплате</button>
+        </div>
+    </div>
+
+    <script>
+        // --- БАЗА ДАННЫХ ПРЕДМЕТОВ (ДРОП) ---
+        const globalSkins = [
+            { id: 'w1', weapon: '★ Керамбит', skin: 'Градиент', price: 175000, rarity: 'gold', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Karambit+Fade' },
+            { id: 'w2', weapon: '★ M9 Bayonet', skin: 'Кровавая паутина', price: 135000, rarity: 'gold', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=M9+Crimson' },
+            { id: 'w3', weapon: '★ Перчатки', skin: 'Кровавое кимоно', price: 104000, rarity: 'gold', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Gloves+Kimono' },
+            { id: 'w4', weapon: 'AWP', skin: 'История о драконе', price: 210000, rarity: 'covert', img: 'images/skins/dragon_lore.png' },
+            { id: 'w5', weapon: 'M4A4', skin: 'Вой', price: 160000, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=M4A4+Howl' },
+            { id: 'w6', weapon: 'Glock-18', skin: 'Градиент', price: 140000, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Glock+Fade' },
+            { id: 'w7', weapon: 'AK-47', skin: 'Огненный змей', price: 85000, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=AK47+Fire+Serpent' },
+            { id: 'w8', weapon: 'AK-47', skin: 'Топливный инжектор', price: 14500, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=AK47+Fuel' },
+            { id: 'w9', weapon: 'AWP', skin: 'Неонуар', price: 4200, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=AWP+Neo-Noir' },
+            { id: 'w10', weapon: 'M4A1-S', skin: 'Поток информации', price: 12800, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=M4A1-S+Printstream' },
+            { id: 'w11', weapon: 'AK-47', skin: 'Изумрудные завитки', price: 1850, rarity: 'restricted', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=AK47+Emerald' },
+            { id: 'w12', weapon: 'USP-S', skin: 'Путеводитель', price: 950, rarity: 'restricted', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=USP+Cortex' },
+            { id: 'w13', weapon: 'Desert Eagle', skin: 'Код красного', price: 3800, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Deagle+Code' },
+            { id: 'w14', weapon: 'M4A4', skin: 'Безлюдный космос', price: 1400, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=M4A4+Desolate' },
+            { id: 'w15', weapon: 'Glock-18', skin: 'Дух воды', price: 650, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Glock+Water' },
+            { id: 'w16', weapon: 'MAC-10', skin: 'Неоновый гонщик', price: 900, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=MAC10+Neon' },
+            { id: 'w17', weapon: 'FAMAS', skin: 'Бед-трип', price: 450, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=FAMAS+Comm' },
+            { id: 'w18', weapon: 'Galil AR', skin: 'Хроматический аберрация', price: 550, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Galil+Chrom' },
+            { id: 'w19', weapon: 'P250', skin: 'Азимов', price: 380, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=P250+Asimov' },
+            { id: 'w20', weapon: 'MP9', skin: 'Слизь', price: 180, rarity: 'uncommon', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=MP9+Bio' },
+            { id: 'w21', weapon: 'Nova', skin: 'Скоростной зверь', price: 290, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Nova+Hyper' },
+            { id: 'w22', weapon: 'Augh', skin: 'Хамелеон', price: 410, rarity: 'covert', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=AUG+Cham' },
+            { id: 'w23', weapon: 'SSG 08', skin: 'Мертвые головы', price: 480, rarity: 'classified', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=SSG+Death' },
+            { id: 'w24', weapon: 'SG 553', skin: 'Колония', price: 45, rarity: 'common', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=SG+Colony' },
+            { id: 'w25', weapon: 'Five-SeveN', skin: 'Испытание огнем', price: 65, rarity: 'common', img: 'https://via.placeholder.com/120x90/1a1d24/fff?text=Five7+Flame' },
+            { id: 'w26', weapon: 'Dual Berettas', skin: 'Ангельские глаза', price: 240, rarity: 'restricted', img: 'images/skins/Angel_Eyes.png' }
+        ];
+
+        // --- БАЗА ДАННЫХ КЕЙСОВ ---
+        const casesData = [
+            { id: 'case_rub_0',  name: 'Кейс «Бомж»',              price: 15,   currency: 'rub', icon: '<img src="images/case/c120.png" alt="case">', items: ['w24', 'w25', 'w20'], weights: [5, 3, 1] },
+            { id: 'case_rub_1',  name: 'Кейс «Рокфеллер»',          price: 450,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_gloves_web.0d2b87025ab6a8c069c44bc8d5b91b55b8ab68e5.png" alt="case">', items: ['w11', 'w12', 'w13', 'w14', 'w15', 'w17'], weights: [5, 3, 1] },
+            { id: 'case_rub_2',  name: 'Кейс «Олигарх»',            price: 1200, currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_cs20.1e6c0be53e3c90609e5f55e0e24a5a06e7d84716.png" alt="case">', items: ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7'], weights: [5, 3, 1] },
+            { id: 'case_rub_3',  name: 'Кейс «Бродяга»',            price: 250,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_phoenix_web.a50c330ea53fc36e9d7c7de5dc90e6df3cf98427.png" alt="case">', items: ['w14', 'w15', 'w18', 'w19', 'w20', 'w21'], weights: [5, 3, 1] },
+            { id: 'case_rub_4',  name: 'Кейс «Техно-Драйв»',        price: 150,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_29.48f9e5ad4bdd2e0ba3e5f63b3b0f75b33e9e7e3d.png" alt="case">', items: ['w15', 'w19', 'w20', 'w23', 'w24', 'w25', 'w26'], weights: [5, 3, 1] },
+            { id: 'case_rub_5',  name: 'Кейс «Арктика»',            price: 600,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_xmas_2013_web.4c31bc67e5d3d81a50b6f7d92c4c59b0f2f44b3c.png" alt="case">', items: ['w8', 'w9', 'w10', 'w12', 'w13', 'w16'], weights: [5, 3, 1] },
+            { id: 'case_rub_6',  name: 'Кейс «Милитари»',           price: 350,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_bravo_web.52c3bcf76a7b82741b4dba9be50c7b05f16ad8c4.png" alt="case">', items: ['w11', 'w14', 'w17', 'w18', 'w22', 'w23'], weights: [5, 3, 1] },
+            { id: 'case_rub_7',  name: 'Кейс «Анубис»',             price: 800,  currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_13_web.ddec8f55aa1ef48e1dc98339d5e0d8eedff0e7f3.png" alt="case">', items: ['w6', 'w8', 'w10', 'w13', 'w14', 'w15'], weights: [5, 3, 1] },
+            { id: 'case_rub_8',  name: 'Кейс «Нож»',                price: 5000, currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_36.b16dcf72fe3f5b4be16f765b4b4db2ceeedc7455.png" alt="case">', items: ['w1', 'w2'], weights: [5, 3, 1] },
+            { id: 'case_rub_9',  name: 'Кейс «Перчатки»',           price: 4500, currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_gloves_web.0d2b87025ab6a8c069c44bc8d5b91b55b8ab68e5.png" alt="case">', items: ['w3'], weights: [5, 3, 1] },
+            { id: 'case_rub_10', name: 'Кейс «Снайпер»',            price: 1100, currency: 'rub', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_11_web.3cb2a8f2cc8d73d0c62b1ac8ecdff5fb68cbde58.png" alt="case">', items: ['w4', 'w9', 'w23'], weights: [5, 3, 1] },
+            { id: 'case_rub_11', name: 'Кейс «Облизни червячка»',   price: 1488, currency: 'rub', icon: '😜 🪱', items: ['w26', 'w4'], weights: [1000, 1] },
+
+            { id: 'case_coin_1',  name: 'Кейс «Ветеран»',           price: 1500,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_esports_web.07aebe44e1b3fcc83fa9c3ea1e1da2c7b5c66e97.png" alt="case">', items: ['w8', 'w11', 'w12', 'w16', 'w19'], weights: [5, 3, 1] },
+            { id: 'case_coin_2',  name: 'Кейс «Тайное»',            price: 5000,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_13_web.ddec8f55aa1ef48e1dc98339d5e0d8eedff0e7f3.png" alt="case">', items: ['w4', 'w5', 'w6', 'w7', 'w10'], weights: [5, 3, 1] },
+            { id: 'case_coin_3',  name: 'Кейс «Премиум»',           price: 8500,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_cs20.1e6c0be53e3c90609e5f55e0e24a5a06e7d84716.png" alt="case">', items: ['w1', 'w2', 'w3', 'w4', 'w8'], weights: [5, 3, 1] },
+            { id: 'case_coin_4',  name: 'Кейс «Новичок»',           price: 300,   currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_csgo_web.ddbe9c29b48b7f67aad04d22acaf5fabb1e5f8d3.png" alt="case">', items: ['w18', 'w19', 'w20', 'w21', 'w24', 'w25'], weights: [5, 3, 1] },
+            { id: 'case_coin_5',  name: 'Кейс «Засекреченное»',     price: 2500,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_37.b11bef64c4adf3e1a0a86cd851b8ae13b77dd16c.png" alt="case">', items: ['w8', 'w13', 'w14', 'w17', 'w18', 'w21'], weights: [5, 3, 1] },
+            { id: 'case_coin_6',  name: 'Кейс «Фортуна»',           price: 1200,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_11_web.3cb2a8f2cc8d73d0c62b1ac8ecdff5fb68cbde58.png" alt="case">', items: ['w12', 'w15', 'w16', 'w19', 'w22', 'w23'], weights: [5, 3, 1] },
+            { id: 'case_coin_7',  name: 'Кейс «Феникс»',            price: 1800,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_phoenix_web.a50c330ea53fc36e9d7c7de5dc90e6df3cf98427.png" alt="case">', items: ['w9', 'w11', 'w14', 'w15', 'w17', 'w21'], weights: [5, 3, 1] },
+            { id: 'case_coin_8',  name: 'Кейс «Хайроллер»',         price: 12000, currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_36.b16dcf72fe3f5b4be16f765b4b4db2ceeedc7455.png" alt="case">', items: ['w1', 'w2', 'w3', 'w5'], weights: [5, 3, 1] },
+            { id: 'case_coin_9',  name: 'Кейс «Сталкер»',           price: 900,   currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_29.48f9e5ad4bdd2e0ba3e5f63b3b0f75b33e9e7e3d.png" alt="case">', items: ['w14', 'w17', 'w20', 'w22', 'w23', 'w25'], weights: [5, 3, 1] },
+            { id: 'case_coin_10', name: 'Кейс «Магнат»',            price: 6500,  currency: 'coin', icon: '<img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/weapon_cases/crate_community_37.b11bef64c4adf3e1a0a86cd851b8ae13b77dd16c.png" alt="case">', items: ['w4', 'w6', 'w7', 'w8', 'w10'], weights: [5, 3, 1] }
+            
+        ];
+
+        // --- ГЛОБАЛЬНОЕ СОСТОЯНИЕ ДВИЖКА ---
+        let balance = 2500;
+        let bonusBalance = 500;
+        let _rawInventory = [];
+        // Прокси — автоматически обновляет счётчик при каждом изменении
+        let userInventory = new Proxy(_rawInventory, {
+            set(target, prop, value) {
+                target[prop] = value;
+                // Обновляем счётчик вкладки мгновенно
+                const counter = document.getElementById('invCountHeader');
+                if (counter) counter.innerText = target.filter(x => x && typeof x === 'object').length;
+                return true;
+            }
+        });
+        let currentCaseId = null;
+        let isSpinning = false;
+        let multiCount = 1;
+        
+        let isVerified = false;
+        let selectedPaymentMethodId = 'sbp'; // Метод по умолчанию
+
+        let stats = { totalCases: 0, totalUpgrades: 0, totalWithdrawn: 0, maxDrop: 0 };
+        let selectedUpgradeSourceIdx = [];  // массив индексов выбранных скинов
+        let selectedUpgradeTargetId = null;
+        let selectedContractIndices = [];
+        let withdrawLogsCounter = 0;
+
+
+        // --- ФУНКЦИИ МОДАЛЬНОГО ОКНА ПОПОЛНЕНИЯ ---
+        function openDepositModal() {
+            document.getElementById('depositModal').style.display = 'flex';
+        }
+
+        function closeDepositModal() {
+            document.getElementById('depositModal').style.display = 'none';
+        }
+
+        function selectPaymentMethod(element, methodId) {
+            // Снимаем класс active со всех методов
+            document.querySelectorAll('.payment-method-card').forEach(card => card.classList.remove('active'));
+            // Добавляем текущему
+            element.classList.add('active');
+            selectedPaymentMethodId = methodId;
+        }
+
+        function executeModalDeposit() {
+            const amountInput = document.getElementById('depositAmountInput');
+            let amount = parseInt(amountInput.value);
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Пожалуйста, введите корректную сумму пополнения!');
+                return;
+            }
+
+            balance += amount;
+            isVerified = true; // Снимаем ограничения
+            updateBalancesUI();
+            closeDepositModal();
+
+            // Красивое отображение выбранного метода для уведомления
+            const methodNames = {
+                'sbp': 'СБП',
+                'card': 'Банковской карты',
+                'crypto': 'Криптовалюты',
+                'skins': 'Скинов Steam',
+                'yoomoney': 'ЮMoney',
+                'qiwi': 'QIWI'
+            };
+            const activeMethodName = methodNames[selectedPaymentMethodId] || 'Выбранной системы';
+
+            alert(`Платеж успешно проведен! Баланс пополнен на ${amount} ₽ через ${activeMethodName}. Верификация успешно завершена.`);
+            
+            // Отправляем системную плашку в открытый чат поддержки
+            const msgDiv = document.getElementById('supportMessages');
+            const systemMsg = document.createElement('div');
+            systemMsg.className = 'msg bot';
+            systemMsg.style.borderLeftColor = '#28a745';
+            systemMsg.style.color = '#28a745';
+            systemMsg.innerHTML = `<strong>[Система]:</strong> Аккаунт успешно верифицирован (пополнение на ${amount} ₽ через ${activeMethodName}). Ограничения на вывод и гейминг полностью сняты!`;
+            msgDiv.appendChild(systemMsg);
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+        }
+
+
+        // --- ДИНАМИЧЕСКИЙ СЧЕТЧИК ОНЛАЙНА ---
+        function initOnlineCounter() {
+            const el = document.getElementById('liveOnlineVal');
+            let currentOnline = 278;
+            
+            setInterval(() => {
+                const shift = Math.floor(Math.random() * 7) - 3;
+                currentOnline += shift;
+                if(currentOnline < 240) currentOnline = 278;
+                if(currentOnline > 304) currentOnline = 278;
+                el.innerText = currentOnline.toLocaleString('ru-RU');
+            }, 2500);
+        }
+
+        // --- ИНИЦИАЛИЗАЦИЯ И МЕНЮ ---
+        function renderCasesMenu() {
+            const rubleGrid = document.getElementById('rubleCasesGrid');
+            const coinGrid = document.getElementById('coinCasesGrid');
+            const selector = document.getElementById('battleCaseSelect');
+            
+            rubleGrid.innerHTML = '';
+            coinGrid.innerHTML = '';
+            selector.innerHTML = '';
+
+            const searchVal = (document.getElementById('casesSearchInput')?.value || '').toLowerCase().trim();
+            const sortVal = document.getElementById('casesSortSelect')?.value || 'default';
+
+            let filtered = casesData.filter(c => {
+                if (!searchVal) return true;
+                return c.name.toLowerCase().includes(searchVal);
+            });
+
+            filtered = [...filtered].sort((a, b) => {
+                if (sortVal === 'price_asc') return a.price - b.price;
+                if (sortVal === 'price_desc') return b.price - a.price;
+                if (sortVal === 'name_asc') return a.name.localeCompare(b.name, 'ru');
+                if (sortVal === 'name_desc') return b.name.localeCompare(a.name, 'ru');
+                return 0;
+            });
+
+            filtered.forEach(c => {
+                const card = document.createElement('div');
+                const isCoin = c.currency === 'coin';
+                card.className = `case-card ${isCoin ? 'bonus-case-style' : ''}`;
+                card.onclick = () => loadCaseDetail(c.id);
+
+                card.innerHTML = `
+                    <div class="case-card-header-info">
+                        <h3>${c.name}</h3>
+                        <p>${c.price} ${isCoin ? '🪙' : '₽'}</p>
+                    </div>
+                    <div class="case-icon">${c.icon}</div>
+                `;
+
+                if (isCoin) {
+                    coinGrid.appendChild(card);
+                } else {
+                    rubleGrid.appendChild(card);
+                }
+            });
+
+            // populate battle selector from all cases (unsorted)
+            casesData.forEach(c => {
+                const isCoin = c.currency === 'coin';
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.innerText = `${c.name} (${c.price} ${isCoin ? '🪙' : '₽'})`;
+                selector.appendChild(opt);
+            });
+        }
+
+        function loadCaseDetail(caseId) {
+            if (isSpinning) return;
+            currentCaseId = caseId;
+            const c = casesData.find(x => x.id === caseId);
+            
+            document.getElementById('casesListView').style.display = 'none';
+            document.getElementById('caseDetailView').style.display = 'block';
+            document.getElementById('openedCaseTitle').innerText = c.name;
+            document.getElementById('openedCaseTitle').style.color = c.currency === 'coin' ? '#00e5ff' : '#ffb700';
+
+            const contentGrid = document.getElementById('caseContentsGrid');
+            contentGrid.innerHTML = '';
+            c.items.forEach(itemId => {
+                const item = globalSkins.find(s => s.id === itemId);
+                const itemCard = document.createElement('div');
+                itemCard.className = `content-item-card`;
+                itemCard.style.borderBottomColor = getRarityColor(item.rarity);
+
+                itemCard.innerHTML = `
+                    <div class="card-name-box">
+                        <div class="card-weapon">${item.weapon}</div>
+                        <div class="card-skin">${item.skin}</div>
+                        <div class="card-price">${item.price} ₽</div>
+                    </div>
+                    <img src="${item.img}" alt="скин">
+                `;
+                contentGrid.appendChild(itemCard);
+            });
+
+            buildRouletteStack(c);
+            // Обновляем текст кнопки под текущий multiCount + цену
+            const openBtn = document.getElementById('openCaseBtn');
+            const currSign = c.currency === 'coin' ? '🪙' : '₽';
+            if (openBtn) {
+                const totalCost = c.price * multiCount;
+                openBtn.textContent = multiCount === 1
+                    ? `Открыть кейс — ${c.price} ${currSign}`
+                    : `Открыть ${multiCount} кейса — ${totalCost} ${currSign}`;
+            }
+        }
+
+        function returnToCasesList() {
+            if (isSpinning) return;
+            document.getElementById('caseDetailView').style.display = 'none';
+            document.getElementById('casesListView').style.display = 'block';
+            currentCaseId = null;
+        }
+
+        // --- ВЫБОР КОЛИЧЕСТВА КЕЙСОВ ---
+        function setMultiCount(n, btn) {
+            if (isSpinning) return;
+            multiCount = n;
+            document.querySelectorAll('.multi-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // обновить надпись кнопки открытия
+            const openBtn = document.getElementById('openCaseBtn');
+            if (openBtn && currentCaseId) {
+                const _c = casesData.find(x => x.id === currentCaseId);
+                const _sign = _c && _c.currency === 'coin' ? '🪙' : '₽';
+                const _total = _c ? _c.price * n : 0;
+                openBtn.textContent = n === 1
+                    ? `Открыть кейс — ${_c ? _c.price : ''} ${_sign}`
+                    : `Открыть ${n} кейса — ${_total} ${_sign}`;
+            } else if (openBtn) {
+                openBtn.textContent = n === 1 ? 'Открыть кейс' : `Открыть ${n} кейса`;
+            }
+            // перестроить рулетки под новое количество
+            if (currentCaseId) {
+                const c = casesData.find(x => x.id === currentCaseId);
+                buildRouletteStack(c);
+            }
+        }
+// --- ЛОГИКА РАБОТЫ РУЛЕТКИ ---
+
+// Строит DOM-стек рулеток нужного числа и заполняет каждую карточками
+function buildRouletteStack(c) {
+    const stack = document.getElementById('roulettesStack');
+    stack.innerHTML = '';
+    for (let i = 0; i < multiCount; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'roulette-wrapper';
+        wrapper.innerHTML = `
+            <div class="pointer"></div>
+            <div class="roulette-window">
+                <div class="roulette-track" id="rouletteTrack_${i}"></div>
+            </div>
+        `;
+        stack.appendChild(wrapper);
+        _fillTrack(i, c);
+    }
+}
+
+function getRandomItemWithWeights(items, weights) {
+    // Если веса не заданы или их длина не совпадает – выбираем равномерно
+    if (!weights || weights.length !== items.length) {
+        return items[Math.floor(Math.random() * items.length)];
+    }
+    // Вычисляем сумму весов
+    let totalWeight = 0;
+    for (let w of weights) totalWeight += w;
+    if (totalWeight <= 0) return items[0]; // защита от дурака
+    // Случайное число от 0 до totalWeight
+    let random = Math.random() * totalWeight;
+    let accum = 0;
+    for (let i = 0; i < items.length; i++) {
+        accum += weights[i];
+        if (random < accum) return items[i];
+    }
+    return items[0];
+}
+
+// Заполняет одну рулетку карточками и ГАРАНТИРОВАННО сбрасывает позицию
+function _fillTrack(idx, c) {
+    const track = document.getElementById(`rouletteTrack_${idx}`);
+    if (!track) return;
+
+    // 1. Убираем transition, чтобы сброс был мгновенным
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+
+    // 2. Принудительный reflow — браузер ОБЯЗАН применить стили выше
+    //    до того как мы изменим что-либо ещё. Без этой строки при
+    //    повторном спине transition назначается раньше чем сброс
+    //    фиксируется, и анимация «прыгает» мгновенно.
+    void track.offsetWidth;
+
+    track.innerHTML = '';
+    for (let i = 0; i < 58; i++) {
+        const randId = c.items[Math.floor(Math.random() * c.items.length)];
+        const item = globalSkins.find(s => s.id === randId);
+        const el = document.createElement('div');
+        el.className = `item-card rarity-${item.rarity}`;
+        el.innerHTML = `
+            <div class="item-name">${item.weapon} | ${item.skin}</div>
+            <div class="item-price">${item.price} ₽</div>
+            <img src="${item.img}" alt="скин">
+        `;
+        track.appendChild(el);
+    }
+}
+
+// Хранилище для таймеров, чтобы отменять их при необходимости
+let spinTimers = [];
+let quickSpinMode = false;
+
+function spinRoulette() {
+    if (isSpinning || !currentCaseId) return;
+    quickSpinMode = false;
+    _doSpin();
+}
+
+function quickSpinRoulette() {
+    if (isSpinning || !currentCaseId) return;
+    quickSpinMode = true;
+    _doSpin();
+}
+
+function _doSpin() {
+    const c = casesData.find(x => x.id === currentCaseId);
+
+    // Списываем стоимость × количество кейсов (один раз!)
+    const totalCost = c.price * multiCount;
+    if (c.currency === 'rub') {
+        if (balance < totalCost) {
+            showBalanceToast('rub', totalCost, balance);
+            return;
+        }
+        balance -= totalCost;
+    } else {
+        if (bonusBalance < totalCost) {
+            showBalanceToast('coin', totalCost, bonusBalance);
+            return;
+        }
+        bonusBalance -= totalCost;
+    }
+
+    isSpinning = true;
+    document.getElementById('openCaseBtn').disabled = true;
+    const qsBtn = document.getElementById('quickSpinBtn'); if(qsBtn) qsBtn.disabled = true;
+    updateBalancesUI();
+
+    spinTimers.forEach(timer => clearTimeout(timer));
+    spinTimers = [];
+
+    const winningItems = [];
+    // Предрассчитываем победителей и подставляем в трек ДО запуска таймеров
+    for (let i = 0; i < multiCount; i++) {
+        const track = document.getElementById(`rouletteTrack_${i}`);
+        if (!track) continue;
+
+        const winItemId = getRandomItemWithWeights(c.items, c.weights);
+        const winningItem = globalSkins.find(s => s.id === winItemId);
+        winningItems.push(winningItem);
+
+        // Вставляем победителя на фиксированную позицию 45
+        const targetCard = track.children[45];
+        if (targetCard) {
+            targetCard.className = `item-card rarity-${winningItem.rarity}`;
+            targetCard.innerHTML = `
+                <div class="item-name">${winningItem.weapon} | ${winningItem.skin}</div>
+                <div class="item-price">${winningItem.price} ₽</div>
+                <img src="${winningItem.img}" alt="скин">
+            `;
+        }
+    }
+
+    // spinDuration — длинный для плавного CS:GO-like замедления
+    const spinDuration = quickSpinMode ? 1.8 : 9.5;
+    // Кривая: мгновенный старт → очень плавное торможение в конце
+    const easingFn = quickSpinMode
+        ? 'cubic-bezier(0.12, 0, 0.2, 1)'
+        : 'cubic-bezier(0.02, 0, 0.03, 1)';
+
+    for (let i = 0; i < multiCount; i++) {
+        const delay = quickSpinMode ? 0 : i * 80;
+        const trackIdx = i; // замкнуть в closure
+        const animationTimer = setTimeout(() => {
+            const track = document.getElementById(`rouletteTrack_${trackIdx}`);
+            if (!track) return;
+
+            // Сброс позиции (transition уже убран в _fillTrack)
+            track.style.transition = 'none';
+            track.style.transform = 'translateX(0px)';
+            void track.offsetWidth; // принудительный reflow
+
+            // Измеряем ширины ЗДЕСЬ — после reflow, перед запуском анимации
+            // Это единственный правильный момент: DOM отрисован, layout актуален
+            const firstCard = track.children[0];
+            const realCardWidth = firstCard
+                ? firstCard.getBoundingClientRect().width
+                : 130;
+            const windowEl = track.parentElement; // .roulette-window
+            const realWindowWidth = windowEl
+                ? windowEl.getBoundingClientRect().width
+                : 560;
+
+            // Центр карточки #45 → центр окна (= линия указателя)
+            // targetOffset = левый край карточки 45 - (половина окна - половина карточки)
+            const targetOffset = (45 * realCardWidth)
+                                - (realWindowWidth / 2)
+                                + (realCardWidth / 2);
+
+            // Джиттер строго внутри карточки: ±(realCardWidth/2 - 5)px
+            const maxJitter = Math.floor(realCardWidth / 2) - 5;
+            const jitter = Math.floor(Math.random() * maxJitter * 2) - maxJitter;
+            const finalShift = Math.round(targetOffset + jitter);
+
+            // Запускаем CSS transition
+            void track.offsetWidth;
+            track.style.transition = `transform ${spinDuration + trackIdx * 0.06}s ${easingFn}`;
+            track.style.transform = `translateX(-${finalShift}px)`;
+        }, delay);
+        spinTimers.push(animationTimer);
+    }
+
+    // Общая длительность: время анимации последней рулетки + задержка старта + буфер
+    const totalDuration = (spinDuration + (multiCount - 1) * 0.06) * 1000
+                        + (quickSpinMode ? 0 : 80 * (multiCount - 1))
+                        + 600;
+
+    const resultTimer = setTimeout(() => {
+        // Подсвечиваем выигрышные карточки под указателем
+        for (let i = 0; i < multiCount; i++) {
+            const track = document.getElementById(`rouletteTrack_${i}`);
+            if (track) {
+                const targetCard = track.children[45];
+                if (targetCard) {
+                    targetCard.style.boxShadow = '0 0 18px 4px #ffb700, inset 0 0 10px rgba(255,183,0,0.3)';
+                    targetCard.style.zIndex = '5';
+                }
+            }
+        }
+
+        winningItems.forEach(winningItem => {
+            userInventory.push({ ...winningItem, uid: Date.now() + Math.random() });
+            stats.totalCases++;
+            if (winningItem.price > stats.maxDrop) stats.maxDrop = winningItem.price;
+            addDropToFeed(winningItem, true);
+        });
+
+        renderInventory();
+        updateStatsUI();
+        updateBalancesUI();
+
+        const unlockTimer = setTimeout(() => {
+            isSpinning = false;
+            document.getElementById('openCaseBtn').disabled = false;
+            const qsBtnU = document.getElementById('quickSpinBtn'); if(qsBtnU) qsBtnU.disabled = false;
+
+            if (currentCaseId === c.id) {
+                buildRouletteStack(c);
+            }
+            spinTimers = [];
+        }, 1800);
+
+        spinTimers.push(unlockTimer);
+    }, totalDuration);
+
+    spinTimers.push(resultTimer);
+}
+
+        // --- ЖИВАЯ ЛЕНТА ДРОПА ---
+        function addDropToFeed(item, isPlayer = false) {
+            const feed = document.getElementById('liveFeedList');
+            const el = document.createElement('div');
+            el.className = `feed-item feed-rarity-${item.rarity} ${isPlayer ? 'player-drop' : ''}`;
+            
+            el.innerHTML = `
+                <div class="feed-item-info">${isPlayer ? '⭐ ВЫБИТО ВАМИ' : 'Игрок ' + Math.floor(Math.random()*899+100)}</div>
+                <div class="feed-item-skin">${item.weapon} | ${item.skin}</div>
+                <img src="${item.img}" alt="скин">
+            `;
+
+            // Вставляем в начало без reflow — просто prepend
+            feed.insertBefore(el, feed.firstChild);
+            // Удаляем лишние элементы снизу (строго 8)
+            while (feed.children.length > 8) {
+                feed.removeChild(feed.lastChild);
+            }
+        }
+
+        function initLiveFeedSimulation() {
+            setInterval(() => {
+                if (Math.random() > 0.35) {
+                    const randItem = globalSkins[Math.floor(Math.random() * globalSkins.length)];
+                    addDropToFeed(randItem, false);
+                }
+            }, 2800);
+        }
+
+        // --- УПРАВЛЕНИЕ СТРАНИЦАМИ ---
+        function switchPage(pageId) {
+            if (isSpinning) return;
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            document.getElementById(`tab-${pageId}`).classList.add('active');
+
+            if (pageId === 'upgrade') initUpgradePage();
+            if (pageId === 'contracts') initContractsPage();
+            if (pageId === 'withdraw') initWithdrawPage();
+            if (pageId === 'inventory') renderInventory();
+        }
+
+        // --- МОДУЛЬ АПГРЕЙДА ---
+        function initUpgradePage() {
+            selectedUpgradeSourceIdx = [];   // теперь массив индексов
+            selectedUpgradeTargetId = null;
+            chanceBoostRubles = 0;
+            const sl = document.getElementById('boostSlider');
+            if (sl) sl.value = 0;
+            const formulaEl = document.getElementById('boostFormulaText');
+            if (formulaEl) formulaEl.innerHTML = 'Выберите скины выше, чтобы увидеть расчёт';
+            const bnd = document.getElementById('boostNewChance');
+            if (bnd) bnd.innerText = '—';
+            const bad = document.getElementById('boostAddedDisplay');
+            if (bad) bad.innerText = '+0 ₽';
+            document.getElementById('upgradeChanceVal').innerText = '0%';
+            document.getElementById('executeUpgradeBtn').disabled = true;
+            document.getElementById('upgradeStatusText').innerText = '';
+            const qub = document.getElementById('quickUpgradeBtn');
+            if (qub) qub.disabled = true;
+
+            document.getElementById('vs-source-box').innerHTML = '<div class="vs-title">Ваши предметы</div><div class="vs-price">0 ₽</div><div style="font-size:9px;color:#8a92a3;margin-top:2px;">выберите 1 или несколько</div>';
+            document.getElementById('vs-target-box').innerHTML = '<div class="vs-title">Цель</div><div class="vs-price">-</div>';
+
+            drawUpgradeWheel(0, false);
+
+            const invList = document.getElementById('upgradeInventory');
+            invList.innerHTML = '';
+            userInventory.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'mini-skin-card';
+                el.style.borderBottomColor = getRarityColor(item.rarity);
+                el.dataset.index = index;
+                el.innerHTML = `
+                    <div class="mini-skin-info-top">${item.weapon} | ${item.skin}</div>
+                    <div class="mini-skin-price-top">${item.price} ₽</div>
+                    <img src="${item.img}">
+                `;
+                el.onclick = () => toggleUpgradeSource(index, el);
+                invList.appendChild(el);
+            });
+
+            const globalList = document.getElementById('upgradeGlobalSkins');
+            globalList.innerHTML = '';
+            const sortedSkins = [...globalSkins].sort((a,b) => a.price - b.price);
+            sortedSkins.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'mini-skin-card';
+                el.style.borderBottomColor = getRarityColor(item.rarity);
+                el.innerHTML = `
+                    <div class="mini-skin-info-top">${item.weapon} | ${item.skin}</div>
+                    <div class="mini-skin-price-top">${item.price} ₽</div>
+                    <img src="${item.img}">
+                `;
+                el.onclick = () => selectUpgradeTarget(item.id, el);
+                globalList.appendChild(el);
+            });
+        }
+
+        function toggleUpgradeSource(index, element) {
+            const pos = selectedUpgradeSourceIdx.indexOf(index);
+            if (pos === -1) {
+                selectedUpgradeSourceIdx.push(index);
+                element.classList.add('selected');
+            } else {
+                selectedUpgradeSourceIdx.splice(pos, 1);
+                element.classList.remove('selected');
+            }
+
+            // Обновляем vs-source-box
+            const srcBox = document.getElementById('vs-source-box');
+            if (selectedUpgradeSourceIdx.length === 0) {
+                srcBox.innerHTML = '<div class="vs-title">Ваши предметы</div><div class="vs-price">0 ₽</div><div style="font-size:9px;color:#8a92a3;margin-top:2px;">выберите 1 или несколько</div>';
+            } else {
+                const totalSrcPrice = selectedUpgradeSourceIdx.reduce((sum, i) => sum + userInventory[i].price, 0);
+                const count = selectedUpgradeSourceIdx.length;
+                const names = selectedUpgradeSourceIdx.map(i => userInventory[i].weapon).join(', ');
+                srcBox.innerHTML = `
+                    <div class="vs-title" style="font-size:9px;">${names}</div>
+                    <div class="vs-price">${totalSrcPrice.toLocaleString('ru-RU')} ₽</div>
+                    <div style="font-size:9px;color:#8a92a3;">${count} предм.</div>
+                `;
+                // Обновляем макс ползунка под текущий баланс
+                const sl = document.getElementById('boostSlider');
+                if (sl) { sl.max = Math.max(10000, balance); sl.step = Math.max(50, Math.round(balance / 200)); }
+            }
+            calculateUpgradeChance();
+        }
+
+        function selectUpgradeTarget(id, element) {
+            document.querySelectorAll('#upgradeGlobalSkins .mini-skin-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedUpgradeTargetId = id;
+
+            const item = globalSkins.find(x => x.id === id);
+            document.getElementById('vs-target-box').innerHTML = `
+                <div class="vs-title">${item.weapon}</div>
+                <div class="vs-price">${item.price.toLocaleString('ru-RU')} ₽</div>
+                <img src="${item.img}">
+            `;
+            // Адаптируем макс ползунка под стоимость цели
+            const sl = document.getElementById('boostSlider');
+            if (sl) {
+                sl.max = Math.round(item.price * 0.95);
+                sl.step = Math.max(50, Math.round(item.price / 200));
+                document.getElementById('boostSliderMax').innerText = Math.round(item.price * 0.95).toLocaleString('ru-RU') + ' ₽';
+            }
+            calculateUpgradeChance();
+        }
+
+        function drawUpgradeWheel(chancePercent, spinning) {
+            const canvas = document.getElementById('upgradeWheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const cx = W / 2, cy = H / 2;
+            const outerR = 100, innerR = 68, tickR = 106;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // --- Фон (тёмное кольцо) ---
+            ctx.beginPath();
+            ctx.arc(cx, cy, outerR + 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#13161c';
+            ctx.fill();
+
+            // --- Засечки по краю (как тахометр) ---
+            for (let i = 0; i < 60; i++) {
+                const angle = (i / 60) * Math.PI * 2 - Math.PI / 2;
+                const isMain = i % 5 === 0;
+                const r1 = tickR, r2 = tickR - (isMain ? 9 : 5);
+                ctx.beginPath();
+                ctx.moveTo(cx + Math.cos(angle) * r1, cy + Math.sin(angle) * r1);
+                ctx.lineTo(cx + Math.cos(angle) * r2, cy + Math.sin(angle) * r2);
+                ctx.strokeStyle = isMain ? '#3a3f50' : '#252835';
+                ctx.lineWidth = isMain ? 2 : 1;
+                ctx.stroke();
+            }
+
+            // --- Серая дуга (проигрыш, от chance до 100%) ---
+            const startAngle = -Math.PI / 2; // 12 часов
+            const fullAngle = Math.PI * 2;
+            const winAngle = (chancePercent / 100) * fullAngle;
+
+            // Серый сектор (проигрыш)
+            if (chancePercent < 100) {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, outerR, startAngle + winAngle, startAngle + fullAngle);
+                ctx.closePath();
+                ctx.fillStyle = '#2a2e3e';
+                ctx.fill();
+            }
+
+            // --- Градиентный сектор победы (зелёный→жёлтый→оранжевый→красный) ---
+            if (chancePercent > 0) {
+                // Рисуем дугу с градиентом цвета
+                const steps = Math.max(2, Math.round(chancePercent * 1.2));
+                for (let s = 0; s < steps; s++) {
+                    const a0 = startAngle + (s / steps) * winAngle;
+                    const a1 = startAngle + ((s + 1) / steps) * winAngle;
+                    const t = s / steps; // 0 = начало (лево), 1 = конец дуги
+
+                    // Цвет: зелёный→жёлтый→оранжевый (как на скрине)
+                    let r, g, b;
+                    if (t < 0.4) {
+                        // зелёный → жёлтый
+                        const p = t / 0.4;
+                        r = Math.round(40 + p * 215);
+                        g = Math.round(167 + p * 20);
+                        b = Math.round(40 - p * 40);
+                    } else if (t < 0.75) {
+                        // жёлтый → оранжевый
+                        const p = (t - 0.4) / 0.35;
+                        r = Math.round(255);
+                        g = Math.round(187 - p * 100);
+                        b = 0;
+                    } else {
+                        // оранжевый → красный
+                        const p = (t - 0.75) / 0.25;
+                        r = 255;
+                        g = Math.round(87 - p * 87);
+                        b = 0;
+                    }
+
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.arc(cx, cy, outerR, a0, a1);
+                    ctx.closePath();
+                    ctx.fillStyle = `rgb(${r},${g},${b})`;
+                    ctx.fill();
+                }
+            }
+
+            // --- Внутренний круг (вырез, как пончик) ---
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1d27';
+            ctx.fill();
+
+            // --- Внешняя обводка кольца ---
+            ctx.beginPath();
+            ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+            ctx.strokeStyle = '#0d0f15';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // --- Внутренняя обводка ---
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+            ctx.strokeStyle = '#2a2e3e';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // --- Glow по краю победного сектора ---
+            if (chancePercent > 0 && chancePercent < 100) {
+                const edgeAngle = startAngle + winAngle;
+                const grad = ctx.createLinearGradient(
+                    cx + Math.cos(edgeAngle - 0.1) * innerR,
+                    cy + Math.sin(edgeAngle - 0.1) * innerR,
+                    cx + Math.cos(edgeAngle) * outerR,
+                    cy + Math.sin(edgeAngle) * outerR
+                );
+                grad.addColorStop(0, 'rgba(255,255,255,0)');
+                grad.addColorStop(1, 'rgba(255,255,255,0.15)');
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, outerR, edgeAngle - 0.04, edgeAngle + 0.04);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
+
+            // --- Обновляем метку шанса ---
+            const label = document.getElementById('wheelLabel');
+            if (label) {
+                if (chancePercent === 0) {
+                    label.textContent = 'выберите предмет';
+                    label.style.color = '#8a92a3';
+                } else if (chancePercent >= 75) {
+                    label.textContent = 'высокий шанс';
+                    label.style.color = '#28a745';
+                } else if (chancePercent >= 40) {
+                    label.textContent = 'средний шанс';
+                    label.style.color = '#ffb700';
+                } else {
+                    label.textContent = 'низкий шанс';
+                    label.style.color = '#eb4b4b';
+                }
+            }
+        }
+
+        function drawUpgradeWheelRotated(chancePercent, angleDeg) {
+            const canvas = document.getElementById('upgradeWheelCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const cx = W / 2, cy = H / 2;
+            const outerR = 100, innerR = 68, tickR = 106;
+
+            ctx.clearRect(0, 0, W, H);
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate((angleDeg * Math.PI) / 180);
+
+            // Фон
+            ctx.beginPath();
+            ctx.arc(0, 0, outerR + 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#13161c';
+            ctx.fill();
+
+            // Засечки
+            for (let i = 0; i < 60; i++) {
+                const angle = (i / 60) * Math.PI * 2 - Math.PI / 2;
+                const isMain = i % 5 === 0;
+                const r1 = tickR, r2 = tickR - (isMain ? 9 : 5);
+
+                ctx.beginPath();
+                ctx.moveTo(Math.cos(angle) * r1, Math.sin(angle) * r1);
+                ctx.lineTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
+                ctx.strokeStyle = isMain ? '#3a3f50' : '#252835';
+                ctx.lineWidth = isMain ? 2 : 1;
+                ctx.stroke();
+            }
+
+            const startAngle = -Math.PI / 2;
+            const fullAngle = Math.PI * 2;
+            const winAngle = (chancePercent / 100) * fullAngle;
+
+            // Проигрышная зона
+            if (chancePercent < 100) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, outerR, startAngle + winAngle, startAngle + fullAngle);
+                ctx.closePath();
+                ctx.fillStyle = '#2a2e3e';
+                ctx.fill();
+            }
+
+            // Победная зона
+            if (chancePercent > 0) {
+                const steps = Math.max(2, Math.round(chancePercent * 1.2));
+
+                for (let s = 0; s < steps; s++) {
+                    const a0 = startAngle + (s / steps) * winAngle;
+                    const a1 = startAngle + ((s + 1) / steps) * winAngle;
+                    const t = s / steps;
+
+                    let r, g, b;
+
+                    if (t < 0.4) {
+                        const p = t / 0.4;
+                        r = Math.round(40 + p * 215);
+                        g = Math.round(167 + p * 20);
+                        b = Math.round(40 - p * 40);
+                    } else if (t < 0.75) {
+                        const p = (t - 0.4) / 0.35;
+                        r = 255;
+                        g = Math.round(187 - p * 100);
+                        b = 0;
+                    } else {
+                        const p = (t - 0.75) / 0.25;
+                        r = 255;
+                        g = Math.round(87 - p * 87);
+                        b = 0;
+                    }
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.arc(0, 0, outerR, a0, a1);
+                    ctx.closePath();
+                    ctx.fillStyle = `rgb(${r},${g},${b})`;
+                    ctx.fill();
+                }
+            }
+
+            // Внутренний круг
+            ctx.beginPath();
+            ctx.arc(0, 0, innerR, 0, Math.PI * 2);
+            ctx.fillStyle = '#1a1d27';
+            ctx.fill();
+
+            // Обводка
+            ctx.beginPath();
+            ctx.arc(0, 0, outerR, 0, Math.PI * 2);
+            ctx.strokeStyle = '#0d0f15';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(0, 0, innerR, 0, Math.PI * 2);
+            ctx.strokeStyle = '#2a2e3e';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // --- БУСТ ШАНСА ---
+        let chanceBoostRubles = 0; // сколько рублей добавляем к ставке
+
+        function applyBoostRub(amount) {
+            chanceBoostRubles = Math.max(0, amount || 0);
+            const sl = document.getElementById('boostSlider');
+            if (sl && parseInt(sl.value) !== chanceBoostRubles) sl.value = Math.min(chanceBoostRubles, parseInt(sl.max));
+            calculateUpgradeChance();
+        }
+
+        function applyBoostPreset(preset) {
+            if (!selectedUpgradeTargetId) return;
+            const targetItem = globalSkins.find(x => x.id === selectedUpgradeTargetId);
+            if (!targetItem) return;
+            const slMax = parseInt(document.getElementById('boostSlider').max) || Math.round(targetItem.price * 0.95);
+            let amount;
+            if (preset === 'max') {
+                amount = Math.min(balance, slMax);
+            } else {
+                amount = Math.min(Math.round(targetItem.price * preset), balance, slMax);
+            }
+            applyBoostRub(amount);
+        }
+
+        function resetBoost() {
+            chanceBoostRubles = 0;
+            const sl = document.getElementById('boostSlider');
+            if (sl) sl.value = 0;
+            calculateUpgradeChance();
+        }
+
+        function _updateBoostUI() {
+            document.getElementById('boostBalanceDisplay').innerText = balance.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function calculateUpgradeChance() {
+            const boostAddedEl = document.getElementById('boostAddedDisplay');
+            const boostNewChanceEl = document.getElementById('boostNewChance');
+            const formulaEl = document.getElementById('boostFormulaText');
+
+            if (!selectedUpgradeSourceIdx.length || selectedUpgradeTargetId === null) {
+                document.getElementById('upgradeChanceVal').innerText = '0%';
+                document.getElementById('executeUpgradeBtn').disabled = true;
+                const qb = document.getElementById('quickUpgradeBtn');
+                if (qb) qb.disabled = true;
+                if (boostAddedEl) boostAddedEl.innerText = '+0 ₽';
+                if (boostNewChanceEl) boostNewChanceEl.innerText = '—';
+                if (formulaEl) formulaEl.innerHTML = 'Выберите скины выше, чтобы увидеть расчёт';
+                drawUpgradeWheel(0, false);
+                return;
+            }
+
+            const totalSrcPrice = selectedUpgradeSourceIdx.reduce((s, i) => s + userInventory[i].price, 0);
+            const targetItem = globalSkins.find(x => x.id === selectedUpgradeTargetId);
+            const targetPrice = targetItem.price;
+
+            const baseChance = Math.min(80, (totalSrcPrice / targetPrice) * 100);
+            const boostedValue = totalSrcPrice + chanceBoostRubles;
+            const totalChance = Math.min(80, (boostedValue / targetPrice) * 100);
+            const addedPercent = totalChance - baseChance;
+
+            if (formulaEl) {
+                if (chanceBoostRubles > 0) {
+                    formulaEl.innerHTML =
+                        `(<span style="color:#c0cde0">${totalSrcPrice.toLocaleString('ru-RU')} ₽</span> скины` +
+                        ` + <span style="color:#ffb700">${chanceBoostRubles.toLocaleString('ru-RU')} ₽</span> буст)` +
+                        ` ÷ <span style="color:#eb4b4b">${targetPrice.toLocaleString('ru-RU')} ₽</span>` +
+                        ` = <span style="color:#28a745;font-weight:900">${totalChance.toFixed(2)}%</span>`;
+                } else {
+                    formulaEl.innerHTML =
+                        `<span style="color:#c0cde0">${totalSrcPrice.toLocaleString('ru-RU')} ₽</span>` +
+                        ` ÷ <span style="color:#eb4b4b">${targetPrice.toLocaleString('ru-RU')} ₽</span>` +
+                        ` = <span style="color:#ffb700;font-weight:900">${baseChance.toFixed(2)}%</span>` +
+                        (baseChance < 95 ? `<br><span style="color:#8a92a3;font-size:10px;">Сдвиньте ползунок чтобы добавить рубли ↑</span>` : '');
+                }
+            }
+
+            if (boostAddedEl) boostAddedEl.innerText = chanceBoostRubles > 0
+                ? `+${chanceBoostRubles.toLocaleString('ru-RU')} ₽  (+${addedPercent.toFixed(2)}%)`
+                : '+0 ₽';
+            if (boostNewChanceEl) boostNewChanceEl.innerText = chanceBoostRubles > 0
+                ? totalChance.toFixed(2) + '%' : '—';
+
+            document.getElementById('upgradeChanceVal').innerText = totalChance.toFixed(2) + '%';
+            document.getElementById('executeUpgradeBtn').disabled = false;
+            const qubE = document.getElementById('quickUpgradeBtn');
+            if (qubE) qubE.disabled = false;
+            document.getElementById('boostBalanceDisplay').innerText = balance.toLocaleString('ru-RU') + ' ₽';
+            drawUpgradeWheel(totalChance, false);
+            // Обновляем подписи кнопок-пресетов
+            const presets = {10: 0.10, 25: 0.25, 50: 0.50, 95: 0.80};
+            Object.entries(presets).forEach(([k, v]) => {
+                const el = document.getElementById('boostPresetCost' + k);
+                if (el) {
+                    const cost = Math.min(Math.round(targetPrice * v), balance);
+                    el.innerText = cost.toLocaleString('ru-RU') + ' ₽';
+                    el.style.color = balance >= Math.round(targetPrice * v) ? '#8a92a3' : '#dc3545';
+                }
+            });
+        }
+
+        function startUpgradeProcess(isQuick) {
+            if (!selectedUpgradeSourceIdx.length || selectedUpgradeTargetId === null) return;
+
+            const targetItem = globalSkins.find(x => x.id === selectedUpgradeTargetId);
+            const totalSrcPrice = selectedUpgradeSourceIdx.reduce((s, i) => s + userInventory[i].price, 0);
+
+            if (chanceBoostRubles > 0) {
+                if (balance < chanceBoostRubles) {
+                    showBalanceToast('rub', chanceBoostRubles, balance);
+                    return;
+                }
+                balance -= chanceBoostRubles;
+                updateBalancesUI();
+            }
+
+            document.getElementById('executeUpgradeBtn').disabled = true;
+            const qubD = document.getElementById('quickUpgradeBtn');
+            if (qubD) qubD.disabled = true;
+            const status = document.getElementById('upgradeStatusText');
+            status.style.color = '#ffb700';
+            status.innerText = chanceBoostRubles > 0
+                ? `⚡ Буст +${chanceBoostRubles.toLocaleString('ru-RU')} ₽ активирован!`
+                : '⚡ Синхронизация полей апгрейда...';
+
+            const totalChance = Math.min(80, ((totalSrcPrice + chanceBoostRubles) / targetItem.price) * 100);
+            const roll = Math.random() * 100;
+            const isWin = roll <= totalChance;
+
+            stats.totalUpgrades++;
+
+            const safeOffset = 8;
+            const finalAngle = isWin
+                ? 360 - ((totalChance / 100) * 180) + safeOffset
+                : 360 - ((totalChance / 100) * 360) - 25;
+
+            const wheelTotalDuration = isQuick ? 3500 : (7000 + Math.random() * 3000);
+            const targetRotation = (360 * (isQuick ? 8 : 16)) + finalAngle;
+            let wheelStartTime = null;
+            function easeOutCubic(x) { return 1 - Math.pow(1 - x, 3); }
+
+            // Запоминаем индексы ДО анимации (они могут измениться)
+            const srcIndices = [...selectedUpgradeSourceIdx];
+
+            function animateWheel(timestamp) {
+                if (!wheelStartTime) wheelStartTime = timestamp;
+                const progress = Math.min((timestamp - wheelStartTime) / wheelTotalDuration, 1);
+                drawUpgradeWheelRotated(totalChance, targetRotation * easeOutCubic(progress));
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    drawUpgradeWheelRotated(totalChance, finalAngle);
+                    resetBoost();
+
+                    // Считаем сумму ДО удаления скинов
+                    const burntTotal = srcIndices.reduce((sum, idx) => sum + (userInventory[idx]?.price || 0), 0);
+                    const consolationCoins = Math.max(1, Math.round(burntTotal * 0.05));
+
+                    // Удаляем все выбранные скины (сортируем по убыванию чтобы splice не ломал индексы)
+                    const sortedIndices = [...srcIndices].sort((a, b) => b - a);
+                    sortedIndices.forEach(idx => userInventory.splice(idx, 1));
+
+                    if (isWin) {
+                        userInventory.push({ ...targetItem, uid: Date.now() + Math.random() });
+                        status.style.color = '#28a745';
+                        status.innerText = `УСПЕХ! Вы получили ${targetItem.weapon} | ${targetItem.skin}!`;
+                        addDropToFeed(targetItem, true);
+                    } else {
+                        bonusBalance += consolationCoins;
+                        status.style.color = '#dc3545';
+                        status.innerText = `НЕУДАЧА! Предметы сгорели. Компенсация: +${consolationCoins} 🪙`;
+                    }
+                    renderInventory();
+                    initUpgradePage();
+                    updateStatsUI();
+                    updateBalancesUI();
+                    if (isWin) showUpgradeResult(true, targetItem, 0);
+                    else showUpgradeResult(false, null, consolationCoins);
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        // --- МОДУЛЬ КОНТРАКТОВ ---
+        function initContractsPage() {
+            selectedContractIndices = [];
+            document.getElementById('contractCount').innerText = '0';
+            document.getElementById('contractTotalPrice').innerText = '0 ₽';
+            document.getElementById('executeContractBtn').disabled = true;
+            document.getElementById('contractStatusText').innerText = '';
+
+            const invList = document.getElementById('contractInventory');
+            invList.innerHTML = '';
+
+            userInventory.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'mini-skin-card';
+                el.style.borderBottomColor = getRarityColor(item.rarity);
+                
+                el.innerHTML = `
+                    <div class="mini-skin-info-top">${item.weapon} | ${item.skin}</div>
+                    <div class="mini-skin-price-top">${item.price} ₽</div>
+                    <img src="${item.img}">
+                `;
+
+                el.onclick = () => {
+                    if (el.classList.contains('selected')) {
+                        el.classList.remove('selected');
+                        selectedContractIndices = selectedContractIndices.filter(i => i !== index);
+                    } else {
+                        if (selectedContractIndices.length >= 10) { alert('Максимум 10 предметов!'); return; }
+                        el.classList.add('selected');
+                        selectedContractIndices.push(index);
+                    }
+                    updateContractSummary();
+                };
+                invList.appendChild(el);
+            });
+        }
+
+        function updateContractSummary() {
+            let total = 0;
+            selectedContractIndices.forEach(idx => { total += userInventory[idx].price; });
+            
+            document.getElementById('contractCount').innerText = selectedContractIndices.length;
+            document.getElementById('contractTotalPrice').innerText = total + ' ₽';
+            
+            document.getElementById('executeContractBtn').disabled = selectedContractIndices.length < 3;
+        }
+
+        function startContractProcess() {
+            if (selectedContractIndices.length < 3) return;
+
+            document.getElementById('executeContractBtn').disabled = true;
+            const status = document.getElementById('contractStatusText');
+            status.style.color = '#a800ff';
+            status.innerText = '📜 Документы подписываются...';
+
+            let combinedValue = 0;
+            selectedContractIndices.forEach(idx => { combinedValue += userInventory[idx].price; });
+
+            const targetBudget = combinedValue * (0.8 + Math.random() * 1.2);
+            
+            let closestSkin = globalSkins[0];
+            let minDiff = Math.abs(globalSkins[0].price - targetBudget);
+            
+            globalSkins.forEach(skin => {
+                let diff = Math.abs(skin.price - targetBudget);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestSkin = skin;
+                }
+            });
+
+            setTimeout(() => {
+                selectedContractIndices.sort((a, b) => b - a);
+                selectedContractIndices.forEach(idx => { userInventory.splice(idx, 1); });
+
+                userInventory.push({ ...closestSkin, uid: Date.now() + Math.random() });
+                
+                status.style.color = '#28a745';
+                status.innerText = `КОНТРАКТ ВЫПОЛНЕН! Получено: ${closestSkin.weapon} | ${closestSkin.skin}`;
+                
+                addDropToFeed(closestSkin, true);
+                renderInventory();
+                initContractsPage();
+                updateBalancesUI();
+            }, 2000);
+        }
+
+        // --- МОДУЛЬ PvP БАТТЛОВ ---
+        let battleRounds = 1;
+
+        function setBattleRounds(n, btn) {
+            battleRounds = n;
+            document.querySelectorAll('[id^=battleRndBtn]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function runCaseBattle() {
+            const caseId = document.getElementById('battleCaseSelect').value;
+            const c = casesData.find(x => x.id === caseId);
+            const totalRolls = battleRounds;
+
+            const totalCost = c.price * totalRolls;
+            if (c.currency === 'rub') {
+                if (balance < totalCost) {
+                    showBalanceToast('rub', totalCost, balance);
+                    return;
+                }
+                balance -= totalCost;
+            } else {
+                if (bonusBalance < totalCost) {
+                    showBalanceToast('coin', totalCost, bonusBalance);
+                    return;
+                }
+                bonusBalance -= totalCost;
+            }
+            updateBalancesUI();
+
+            document.getElementById('startBattleBtn').disabled = true;
+            const arena = document.getElementById('battleArena');
+            arena.style.display = 'grid';
+
+            const userDropsDiv = document.getElementById('battleUserDrops');
+            const botDropsDiv = document.getElementById('battleBotDrops');
+            userDropsDiv.innerHTML = '';
+            botDropsDiv.innerHTML = '';
+
+            document.getElementById('battleUserScore').innerText = '0 ₽';
+            document.getElementById('battleBotScore').innerText = '0 ₽';
+
+            const botsNames = ['Гейб', 'Капитан Прайс', 'Джон Вик', 'Нео', 'Скиллаут'];
+            let bName;
+            document.getElementById('battleBotName').innerText = bName = botsNames[Math.floor(Math.random() * botsNames.length)] + ' (Бот)';
+
+            let userSum = 0;
+            let botSum = 0;
+            let currentRoll = 0;
+            const userWonItems = [];
+            const botWonItems = [];
+
+            function openRound() {
+                if (currentRoll >= totalRolls) {
+                    // Показываем результат через 800мс после последнего раунда
+                    setTimeout(() => {
+                        const userWon = userSum >= botSum;
+                        if (userWon) {
+                            // Пользователь выигрывает — получает и свои, и предметы противника
+                            botWonItems.forEach(item => {
+                                userInventory.push({ ...item, uid: Date.now() + Math.random() });
+                            });
+                            renderInventory();
+                            showBattleResult(true, userSum, botSum, bName);
+                        } else {
+                            // Проигрыш — убираем предметы
+                            userInventory.splice(userInventory.length - totalRolls, totalRolls);
+                            renderInventory();
+                            showBattleResult(false, userSum, botSum, bName);
+                        }
+                        document.getElementById('startBattleBtn').disabled = false;
+                    }, 800);
+                    return;
+                }
+
+                const uWinId = getRandomItemWithWeights(c.items, c.weights);
+                const uItem = globalSkins.find(s => s.id === uWinId);
+                userInventory.push({ ...uItem, uid: Date.now() + Math.random() });
+                userWonItems.push(uItem);
+                userSum += uItem.price;
+
+                const uCard = document.createElement('div');
+                uCard.className = 'inventory-card';
+                uCard.style.borderBottomColor = getRarityColor(uItem.rarity);
+                uCard.style.padding = '8px';
+                uCard.style.minHeight = '110px';
+                uCard.innerHTML = `
+                    <div class="inv-name">${uItem.weapon}</div>
+                    <div class="inv-price">${uItem.price} ₽</div>
+                    <img src="${uItem.img}" style="width:40px; height:40px;">
+                `;
+                userDropsDiv.appendChild(uCard);
+                document.getElementById('battleUserScore').innerText = userSum + ' ₽';
+
+                setTimeout(() => {
+                    const bWinId = c.items[Math.floor(Math.random() * c.items.length)];
+                    const bItem = globalSkins.find(s => s.id === bWinId);
+                    botWonItems.push(bItem);
+                    botSum += bItem.price;
+
+                    const bCard = document.createElement('div');
+                    bCard.className = 'inventory-card';
+                    bCard.style.borderBottomColor = getRarityColor(bItem.rarity);
+                    bCard.style.padding = '8px';
+                    bCard.style.minHeight = '110px';
+                    bCard.innerHTML = `
+                        <div class="inv-name">${bItem.weapon}</div>
+                        <div class="inv-price">${bItem.price} ₽</div>
+                        <img src="${bItem.img}" style="width:40px; height:40px;">
+                    `;
+                    botDropsDiv.appendChild(bCard);
+                    document.getElementById('battleBotScore').innerText = botSum + ' ₽';
+
+                    currentRoll++;
+                    setTimeout(openRound, 1200);
+                }, 400);
+            }
+
+            setTimeout(openRound, 500);
+        }
+
+        function showBattleResult(isWin, userSum, botSum, botName) {
+            const overlay = document.getElementById('upgradeResultOverlay');
+            const box = document.getElementById('upgradeResultBox');
+            const icon = document.getElementById('upgradeResultIcon');
+            const label = document.getElementById('upgradeResultLabel');
+            const skinName = document.getElementById('upgradeResultSkinName');
+            const skinPrice = document.getElementById('upgradeResultSkinPrice');
+            const img = document.getElementById('upgradeResultImg');
+            const subtext = document.getElementById('upgradeResultSubtext');
+            const btn = document.getElementById('upgradeResultBtn');
+
+            overlay.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+            img.style.display = 'none';
+
+            if (isWin) {
+                overlay.className = 'upgrade-result-overlay win';
+                box.className = 'upgrade-result-box win';
+                icon.textContent = '🏆';
+                label.className = 'upgrade-result-label win';
+                label.textContent = 'ПОБЕДА!';
+                skinName.textContent = 'Ваш счёт: ' + userSum + ' ₽  vs  ' + botSum + ' ₽';
+                skinPrice.className = 'upgrade-result-skin-price win';
+                skinPrice.textContent = 'Вы забираете все предметы!';
+                subtext.textContent = botName + ' проиграл.';
+                btn.className = 'btn-upgrade-result-close win';
+                btn.textContent = 'Забрать победу!';
+                spawnConfetti(overlay);
+            } else {
+                overlay.className = 'upgrade-result-overlay lose';
+                box.className = 'upgrade-result-box lose';
+                icon.textContent = '💀';
+                label.className = 'upgrade-result-label lose';
+                label.textContent = 'ПОРАЖЕНИЕ!';
+                skinName.textContent = 'Ваш счёт: ' + userSum + ' ₽  vs  ' + botSum + ' ₽';
+                skinPrice.className = 'upgrade-result-skin-price lose';
+                skinPrice.textContent = 'Предметы уходят ' + botName;
+                subtext.textContent = 'Не повезло. Попробуй ещё раз!';
+                btn.className = 'btn-upgrade-result-close lose';
+                btn.textContent = 'Попробовать снова';
+            }
+
+            overlay.style.display = 'flex';
+        }
+
+        // --- МОДУЛЬ ИНВЕНТАРЯ И ПРОДАЖИ ---
+        function renderInventory() {
+            // Всегда обновляем счётчик
+            document.getElementById('invCountHeader').innerText = userInventory.length;
+
+            const grid = document.getElementById('inventoryGrid');
+            if (!grid) return;
+
+            // Если вкладка инвентаря неактивна — не перерисовываем DOM зря,
+            // но при активации вкладки renderInventory будет вызван снова
+            grid.innerHTML = '';
+
+            if (userInventory.length === 0) {
+                grid.innerHTML = '<div style="color:#8a92a3; grid-column:span 5; text-align:center; padding:40px;">Ваш инвентарь пуст. Откройте несколько кейсов!</div>';
+                return;
+            }
+
+            userInventory.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'inventory-card';
+                card.style.borderBottomColor = getRarityColor(item.rarity);
+
+                card.innerHTML = `
+                    <div class="inv-name" title="${item.weapon} | ${item.skin}">${item.weapon}</div>
+                    <div class="inv-price">${item.price} ₽</div>
+                    <img src="${item.img}" alt="скин">
+                    <button class="btn-sell" onclick="sellItem(${item.uid})">Продать</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function sellItem(uid) {
+            const idx = userInventory.findIndex(x => x.uid === uid);
+            if (idx !== -1) {
+                balance += userInventory[idx].price;
+                userInventory.splice(idx, 1);
+                renderInventory();
+                updateBalancesUI();
+            }
+        }
+
+        // --- СИМУЛЯЦИЯ ВЫВОДА В STEAM ---
+        function initWithdrawPage() {
+            const container = document.getElementById('withdrawInventory');
+            container.innerHTML = '';
+
+            if (userInventory.length === 0) {
+                container.innerHTML = '<div style="color:#8a92a3; padding:20px;">Нет доступных скинов для вывода</div>';
+                return;
+            }
+
+            userInventory.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'mini-skin-card';
+                el.style.borderBottomColor = getRarityColor(item.rarity);
+                el.style.minHeight = '130px';
+                
+                el.innerHTML = `
+                    <div class="mini-skin-info-top">${item.weapon} | ${item.skin}</div>
+                    <div class="mini-skin-price-top">${item.price} ₽</div>
+                    <img src="${item.img}" style="margin-bottom:8px;">
+                    <button class="btn-withdraw-action" onclick="requestSteamWithdraw(${index})">Вывести</button>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function requestSteamWithdraw(index) {
+    const item = userInventory[index];
+    const logs = document.getElementById('withdrawLogs');
+
+    // Проверка наличия и валидности трейд-ссылки
+    if (!savedTradeUrl || !savedTradeUrl.includes('steamcommunity.com/tradeoffer/new/') || !savedTradeUrl.includes('partner=') || !savedTradeUrl.includes('token=')) {
+        const errorLine = document.createElement('div');
+        errorLine.className = 'log-line';
+        errorLine.style.borderLeftColor = '#eb4b4b';
+        errorLine.innerHTML = `<strong>[Ошибка]</strong> ❌ Невозможно отправить трейд: не сохранена корректная трейд-ссылка. Перейдите во вкладку «Вывод скинов» и сохраните ссылку.`;
+        logs.insertBefore(errorLine, logs.firstChild);
+        return;
+    }
+
+    if (withdrawLogsCounter === 0) logs.innerHTML = '';
+    withdrawLogsCounter++;
+
+    const withdrawId = 'wlog_' + Date.now();
+    const logLine = document.createElement('div');
+    logLine.className = 'log-line';
+    logLine.id = withdrawId;
+    logLine.innerHTML = `<strong>[Запрос #${withdrawLogsCounter}]</strong> Отправка запроса на вывод ${item.weapon}...`;
+    logs.insertBefore(logLine, logs.firstChild);
+
+    userInventory.splice(index, 1);
+    initWithdrawPage();
+    renderInventory();
+
+    continueWithdrawChain(withdrawId, item);
+}
+
+        function continueWithdrawChain(withdrawId, item) {
+            const line = document.getElementById(withdrawId);
+            
+            setTimeout(() => {
+                if (!isVerified) {
+                    line.style.borderLeftColor = '#eb4b4b';
+                    line.innerHTML = `<strong>[Ошибка]</strong> ❌ Трейд отклонен. Причина: Аккаунт не верифицирован.`;
+                } else {
+                    line.style.borderLeftColor = '#28a745';
+                    line.innerHTML = `<strong>[Успех]</strong>  Трейд успешно отправлен! Проверьте ваш Steam. Предмет "${item.weapon} | ${item.skin}" передан.`;
+                    stats.totalWithdrawn += item.price;
+                    updateStatsUI();
+                }
+            }, 1500);
+        }
+
+        // --- STEAM АВТОРИЗАЦИЯ (симуляция) ---
+        const steamNicknames = ['Prodigy99', 'ShadowWolf', 'xX_N1TR0_Xx', 'KnifeMaster', 'csgo_rat', 'MrFreeze47', 'DragonBorn', 'QuantumSniper'];
+        let steamLoggedIn = false;
+        let savedTradeUrl = '';
+
+        function steamLogin() {
+            // Симуляция — выбираем случайный ник
+            const nick = steamNicknames[Math.floor(Math.random() * steamNicknames.length)];
+            steamLoggedIn = true;
+            document.getElementById('steamNickname').textContent = nick;
+            document.getElementById('steamLoginBtn').style.display = 'none';
+            document.getElementById('steamUserInfo').style.display = 'block';
+            // Снимаем ограничения верификации при входе через стим
+            isVerified = true;
+            updateBalancesUI();
+        }
+
+        function steamLogout() {
+            steamLoggedIn = false;
+            document.getElementById('steamLoginBtn').style.display = 'block';
+            document.getElementById('steamUserInfo').style.display = 'none';
+        }
+
+        // --- ТРЕЙД-ССЫЛКА ---
+        function saveTradeUrl() {
+            const input = document.getElementById('tradeUrlInput');
+            const status = document.getElementById('tradeUrlStatus');
+            const val = input.value.trim();
+
+            if (!val) {
+                status.style.color = '#eb4b4b';
+                status.textContent = '⚠️ Введите ссылку перед сохранением';
+                return;
+            }
+            if (!val.includes('steamcommunity.com/tradeoffer/new/') || !val.includes('partner=') || !val.includes('token=')) {
+                status.style.color = '#eb4b4b';
+                status.textContent = '❌ Неверный формат. Проверьте ссылку (нужен partner= и token=)';
+                return;
+            }
+            savedTradeUrl = val;
+            status.style.color = '#28a745';
+            status.textContent = '✅ Трейд-ссылка сохранена! Теперь вывод активен.';
+            isVerified = true;
+            updateBalancesUI();
+        }
+        function activatePromo() {
+            const input = document.getElementById('promoInput');
+            const code = input.value.trim().toUpperCase();
+
+            if (code === 'START') {
+                balance += 500;
+                bonusBalance += 1000;
+                alert('Промокод активирован! Начислено: 500 ₽ и 1000 🪙');
+            } else if (code === 'MEGA2026') {
+                balance += 5000;
+                bonusBalance += 10000;
+                alert('Супер-промокод активирован! Начислено: 5000 ₽ и 10000 🪙');
+            } else {
+                alert('Промокод не найден или устарел.');
+            }
+            input.value = '';
+            updateBalancesUI();
+        }
+
+        // --- ВСПОМОГАТЕЛЬНЫЙ ИНТЕРФЕЙС UI ---
+        function updateBalancesUI() {
+            document.getElementById('ui-balance').innerText = balance;
+            document.getElementById('ui-bonus').innerText = bonusBalance;
+            const bbd = document.getElementById('boostBalanceDisplay');
+            if (bbd) bbd.innerText = balance.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function updateStatsUI() {
+            document.getElementById('statCases').innerText = stats.totalCases;
+            document.getElementById('statUpgrades').innerText = stats.totalUpgrades;
+            document.getElementById('statWithdrawn').innerText = stats.totalWithdrawn + ' ₽';
+            document.getElementById('statMaxDrop').innerText = stats.maxDrop + ' ₽';
+        }
+
+        function getRarityColor(rarity) {
+    if (rarity === 'common') return '#b0c3d9';
+    if (rarity === 'uncommon') return '#5e98d9';
+    if (rarity === 'restricted') return '#8847ff';
+    if (rarity === 'classified') return '#d32ce6';
+    if (rarity === 'covert') return '#eb4b4b';
+    if (rarity === 'gold') return '#ffb700';
+
+    return '#b0c3d9';
+}
+
+        // --- УПРАВЛЕНИЕ СИСТЕМОЙ ТЕХПОДДЕРЖКИ ---
+        function toggleSupportChat() {
+            const chat = document.getElementById('supportChat');
+            chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendSupportMessage() {
+            const input = document.getElementById('supportInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const msgDiv = document.getElementById('supportMessages');
+            
+            const uMsg = document.createElement('div');
+            uMsg.className = 'msg user';
+            uMsg.innerText = text;
+            msgDiv.appendChild(uMsg);
+            input.value = '';
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+
+            setTimeout(() => {
+                const bMsg = document.createElement('div');
+                bMsg.className = 'msg bot';
+                
+                const unverifiedReplies = [
+                    'Внимание! Для активации вывода скинов и разблокировки трейд-сессии вам необходимо верифицировать аккаунт, пополнив баланс на 500 рублей.',
+                    '🔒 Ваш аккаунт ещё не верифицирован. Пополните баланс на 500 ₽ — это разблокирует вывод предметов в Steam.',
+                    'Привет! Похоже, ваш аккаунт не прошёл верификацию. Для вывода скинов пополните баланс от 500 ₽ любым удобным способом.',
+                    'Здравствуйте! Трейды заблокированы из-за непройденной верификации. Один быстрый платёж — и всё заработает!',
+                    '⚠️ Для активации вывода необходимо пополнение. Без этого Steam-трейд не откроется. Пополните от 500 ₽ и пишите снова!'
+                ];
+                const verifiedReplies = [
+                    'На нашем сайте абсолютно честная система дропа! У всех пользователей равные шансы. Рандом основан на алгоритмах Provably Fair. Удачи!',
+                    '😊 Привет! Рады вам помочь. Если возникли вопросы по открытию кейсов или апгрейду — пишите, поможем разобраться!',
+                    'Ваш аккаунт верифицирован. Вы можете выводить скины в Steam без ограничений. Есть вопросы — задавайте!',
+                    '🎰 Всё работает в штатном режиме. Наш алгоритм дропа проверен и честен. Пусть вам выпадет нож!',
+                    'Добрый день! На сайте проблем нет. Если кейс не открылся — обновите страницу. Баланс сохраняется. Удачи в открытиях!',
+                    'Привет! По техническим вопросам — пишите сюда. Обычно мы отвечаем в течение минуты. Сайт работает стабильно.',
+                    '✅ Верификация пройдена. Вывод в Steam доступен. Хорошей игры и жирных дропов! 🔥',
+                    'Спасибо за обращение! Ваши предметы в безопасности. Для вывода перейдите во вкладку «Вывод скинов».',
+                ];
+                
+                const pool = !isVerified ? unverifiedReplies : verifiedReplies;
+                bMsg.innerText = pool[Math.floor(Math.random() * pool.length)];
+                
+                msgDiv.appendChild(bMsg);
+                msgDiv.scrollTop = msgDiv.scrollHeight;
+            }, 700);
+        }
+
+        // --- ОВЕРЛЕЙ РЕЗУЛЬТАТА АПГРЕЙДА ---
+        function showUpgradeResult(isWin, item, consolationCoins) {
+            const overlay = document.getElementById('upgradeResultOverlay');
+            const box = document.getElementById('upgradeResultBox');
+            const icon = document.getElementById('upgradeResultIcon');
+            const label = document.getElementById('upgradeResultLabel');
+            const skinName = document.getElementById('upgradeResultSkinName');
+            const skinPrice = document.getElementById('upgradeResultSkinPrice');
+            const img = document.getElementById('upgradeResultImg');
+            const subtext = document.getElementById('upgradeResultSubtext');
+            const btn = document.getElementById('upgradeResultBtn');
+
+            // Очистка конфетти
+            overlay.querySelectorAll('.confetti-particle').forEach(el => el.remove());
+
+            if (isWin) {
+                overlay.className = 'upgrade-result-overlay win';
+                box.className = 'upgrade-result-box win';
+                icon.textContent = '🏆';
+                label.className = 'upgrade-result-label win';
+                label.textContent = 'ВЫИГРАЛ!';
+                skinName.textContent = item.weapon + ' | ' + item.skin;
+                skinPrice.className = 'upgrade-result-skin-price win';
+                skinPrice.textContent = '+' + item.price + ' ₽';
+                img.src = item.img;
+                img.style.display = 'block';
+                subtext.textContent = 'Скин добавлен в ваш инвентарь!';
+                btn.className = 'btn-upgrade-result-close win';
+                btn.textContent = 'Забрать награду!';
+                // Конфетти
+                spawnConfetti(overlay);
+            } else {
+                overlay.className = 'upgrade-result-overlay lose';
+                box.className = 'upgrade-result-box lose';
+                icon.textContent = '💀';
+                label.className = 'upgrade-result-label lose';
+                label.textContent = 'ПРОИГРАЛ!';
+                skinName.textContent = 'Предметы уничтожены';
+                skinPrice.className = 'upgrade-result-skin-price lose';
+                skinPrice.textContent = 'Деньги не возвращаются';
+                img.style.display = 'none';
+                subtext.textContent = 'Не везёт — бывает. Попробуй ещё раз!';
+                btn.className = 'btn-upgrade-result-close lose';
+                btn.textContent = 'Попробовать снова';
+            }
+
+            overlay.style.display = 'flex';
+        }
+
+        function closeUpgradeResult() {
+            document.getElementById('upgradeResultOverlay').style.display = 'none';
+        }
+
+        function spawnConfetti(container) {
+            const colors = ['#28a745','#ffb700','#00e5ff','#fff','#a3ff70','#f9d423'];
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'confetti-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = '-10px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.animationDuration = (1.2 + Math.random() * 1.5) + 's';
+                p.style.animationDelay = (Math.random() * 0.6) + 's';
+                p.style.width = (6 + Math.random() * 8) + 'px';
+                p.style.height = (6 + Math.random() * 8) + 'px';
+                container.appendChild(p);
+            }
+        }
+
+        // --- ПОИСК В АПГРЕЙДЕ ---
+        function filterUpgradeInventory(query) {
+            const q = query.toLowerCase().trim();
+            document.querySelectorAll('#upgradeInventory .mini-skin-card').forEach((el, idx) => {
+                const item = userInventory[idx];
+                if (!item) return;
+                const match = !q || (item.weapon + ' ' + item.skin).toLowerCase().includes(q) || String(item.price).includes(q);
+                el.style.display = match ? '' : 'none';
+            });
+        }
+
+        function filterUpgradeGlobalSkins(query) {
+            const q = query.toLowerCase().trim();
+            document.querySelectorAll('#upgradeGlobalSkins .mini-skin-card').forEach(el => {
+                const name = (el.querySelector('.mini-skin-info-top')?.textContent || '').toLowerCase();
+                const price = (el.querySelector('.mini-skin-price-top')?.textContent || '').toLowerCase();
+                const match = !q || name.includes(q) || price.includes(q);
+                el.style.display = match ? '' : 'none';
+            });
+        }
+
+                // --- УВЕДОМЛЕНИЕ О НЕХВАТКЕ БАЛАНСА ---
+        let toastTimeout = null;
+        function showBalanceToast(currency, needed, have) {
+            const toast = document.getElementById('balanceToast');
+            const msg = document.getElementById('balanceToastMsg');
+            const diff = needed - have;
+            if (currency === 'rub') {
+                msg.textContent = `Недостаточно средств! Нужно ещё ${diff} ₽ (требуется ${needed} ₽, есть ${have} ₽)`;
+            } else {
+                msg.textContent = `Недостаточно монет! Нужно ещё ${diff} 🪙 (требуется ${needed} 🪙, есть ${have} 🪙)`;
+            }
+            toast.classList.add('show');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // --- ПЕРВИЧНЫЙ ЗАПУСК ---
+        window.onload = function() {
+            renderCasesMenu();
+            renderInventory();
+            initLiveFeedSimulation();
+            initOnlineCounter();
+            updateBalancesUI();
+            updateStatsUI();
+
+            // Живой поиск кейсов
+            const csi = document.getElementById('casesSearchInput');
+            if (csi) csi.addEventListener('input', renderCasesMenu);
+
+            // Поиск в апгрейде — инвентарь
+            const uis = document.getElementById('upgradeInventorySearch');
+            if (uis) uis.addEventListener('input', () => filterUpgradeInventory(uis.value));
+
+            // Поиск в апгрейде — глобальные скины
+            const ugs = document.getElementById('upgradeGlobalSearch');
+            if (ugs) ugs.addEventListener('input', () => filterUpgradeGlobalSkins(ugs.value));
+        };
+    </script>
+</body>
+</html>
