@@ -85,6 +85,7 @@
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
+            position: relative;
         }
 
         .promo-box {
@@ -1170,6 +1171,278 @@
             transition: border-color 0.2s;
         }
         .upgrade-search-input:focus { border-color: #ffb700; }
+
+        /* ──────────── КЛАСС для grid-column: span 2 ──────────── */
+        .upgrade-side-full { grid-column: span 2; }
+
+        /* ══════════════ МОБИЛЬНАЯ АДАПТАЦИЯ ══════════════ */
+        @media (max-width: 768px) {
+            body { padding: 8px; padding-bottom: 85px; }
+
+            /* ШАПКА */
+            header {
+                padding: 10px 12px; gap: 8px;
+                flex-direction: column; align-items: stretch;
+            }
+            .logo-area { justify-content: space-between; width: 100%; }
+            .logo { font-size: 20px; }
+            .header-right { width: 100%; flex-direction: column; gap: 8px; }
+            .promo-box { display: none; }
+            .balance-container { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+            .balance-box { font-size: 12px; padding: 8px 10px; justify-content: center; }
+            .btn-deposit-trigger { font-size: 11px; padding: 5px 8px; }
+            .btn-steam-login { font-size: 12px; padding: 8px 12px; width: 100%; justify-content: center; }
+            .steam-user-info { justify-content: center; }
+
+            /* ГЛАВНЫЙ LAYOUT */
+            .main-container { flex-direction: column; gap: 10px; }
+            .live-feed-sidebar { display: none; }
+            .content-area { width: 100%; }
+
+            /* СТАТИСТИКА */
+            .stats-bar { grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 12px; }
+            .stat-item { font-size: 11px; }
+            .stat-item span { font-size: 13px; }
+
+            /* ВКЛАДКИ */
+            .navigation-tabs { gap: 5px; margin-bottom: 16px; }
+            .tab-btn { padding: 9px 10px; font-size: 11px; border-radius: 6px; }
+
+            /* КЕЙСЫ */
+            .cases-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+            .case-card { min-height: 160px; padding: 12px 8px; }
+            .case-card h3 { font-size: 12px; height: 30px; }
+            .case-icon img { width: 70px; height: 70px; }
+
+            /* РУЛЕТКА */
+            .roulettes-stack { max-width: 100%; }
+            .roulette-wrapper { padding: 10px 8px; border-radius: 10px; }
+            .roulette-window { height: 115px; }
+            .item-card { width: 105px; height: 115px; font-size: 10px; padding: 7px; }
+            .item-card img { width: 48px; height: 48px; }
+            .multi-open-bar { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
+            .multi-btn { width: 36px; height: 36px; font-size: 14px; }
+            .btn-open { padding: 13px 20px; font-size: 15px; }
+
+            /* АПГРЕЙД */
+            .upgrade-grid { grid-template-columns: 1fr !important; gap: 12px; }
+            .upgrade-side { min-height: unset; }
+            .upgrade-side-full { grid-column: span 1 !important; }
+            .wheel-wrapper { width: 180px; height: 180px; }
+            #upgradeWheelCanvas { width: 180px !important; height: 180px !important; }
+            .upgrade-vs { gap: 10px; }
+            .vs-box { width: 75px; height: 95px; }
+
+            /* БАТТЛЫ */
+            .battle-arena { grid-template-columns: 1fr; gap: 12px; }
+            .battle-setup { flex-direction: column; align-items: stretch; gap: 10px; }
+            .battle-setup select { width: 100%; }
+            .btn-battle-start { width: 100%; text-align: center; }
+
+            /* ИНВЕНТАРЬ */
+            .inventory-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+            .inventory-card { min-height: 155px; }
+
+            /* ВЫВОД */
+            .trade-url-block { padding: 14px; }
+            .trade-url-row { flex-direction: column; gap: 8px; }
+            .btn-save-trade-url { width: 100%; text-align: center; }
+
+            /* СОДЕРЖИМОЕ КЕЙСА */
+            .contents-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+            .case-contents-block { padding: 16px 12px; }
+
+            /* МОДАЛ — выезжает снизу */
+            .modal-overlay { align-items: flex-end; }
+            .deposit-modal-content {
+                border-radius: 16px 16px 0 0; max-width: 100%;
+                padding: 20px 16px; max-height: 90vh; overflow-y: auto;
+            }
+            .payment-methods-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .payment-method-card { padding: 10px 6px; font-size: 11px; gap: 5px; }
+            .payment-method-card span:first-child { font-size: 18px; }
+
+            /* ОВЕРЛЕЙ АПГРЕЙДА */
+            .upgrade-result-box { padding: 28px 18px; }
+            .upgrade-result-label { font-size: 36px; letter-spacing: 2px; }
+            .upgrade-result-icon { font-size: 56px; }
+            .upgrade-result-img { width: 85px; height: 85px; }
+            .btn-upgrade-result-close { padding: 12px 28px; font-size: 14px; }
+
+            /* ЧАТ ПОДДЕРЖКИ */
+            .support-btn { bottom: 14px; right: 14px; padding: 12px 16px; font-size: 13px; }
+            .support-chat { width: calc(100vw - 16px); right: 8px; bottom: 70px; height: 360px; }
+
+            .section-title { font-size: 12px; letter-spacing: 1px; }
+            .boost-btn { padding: 8px 5px; font-size: 12px; }
+        }
+
+        @media (max-width: 400px) {
+            .tab-btn { padding: 8px 7px; font-size: 10px; }
+            .balance-container { grid-template-columns: 1fr; }
+            .cases-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* КНОПКА ПРОФИЛЯ */
+        .btn-profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: #1a1d24;
+            border: 1px solid #3a3f4d;
+            color: #c6d4df;
+            padding: 9px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+        }
+        .btn-profile-trigger:hover {
+            border-color: #ffb700;
+            color: #ffb700;
+            box-shadow: 0 3px 12px rgba(255,183,0,0.2);
+        }
+
+        /* ПАНЕЛЬ ПРОФИЛЯ */
+        .profile-panel {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 320px;
+            background: #1f232e;
+            border: 1px solid #3a3f4d;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            z-index: 2000;
+            overflow: hidden;
+        }
+        .profile-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: #161922;
+            font-weight: bold;
+            font-size: 14px;
+            color: #ffb700;
+            border-bottom: 1px solid #2d3242;
+        }
+        .profile-close-btn {
+            background: none;
+            border: none;
+            color: #8a92a3;
+            font-size: 16px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+        .profile-close-btn:hover { color: #eb4b4b; }
+        .profile-section {
+            padding: 14px 16px;
+            border-bottom: 1px solid #2d3242;
+        }
+        .profile-section:last-child { border-bottom: none; }
+        .profile-section-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8a92a3;
+            margin-bottom: 10px;
+        }
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 7px;
+            gap: 8px;
+        }
+        .profile-row span:first-child { color: #8a92a3; flex-shrink: 0; }
+        .profile-row span:last-child { font-weight: bold; text-align: right; word-break: break-all; }
+        .profile-recent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .profile-case-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #13161c;
+            border-radius: 7px;
+            padding: 7px 10px;
+            font-size: 12px;
+        }
+        .profile-case-name { color: #c6d4df; font-weight: bold; }
+        .profile-case-time { color: #4a5568; font-size: 10px; }
+        .profile-drop-card {
+            background: #13161c;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .profile-drop-card img {
+            width: 52px; height: 52px; object-fit: contain; flex-shrink: 0;
+        }
+        .profile-drop-info { flex: 1; }
+        .profile-drop-name { font-weight: bold; font-size: 12px; color: #fff; margin-bottom: 3px; }
+        .profile-drop-price { font-size: 13px; font-weight: bold; color: #28a745; }
+        .profile-drop-rarity { font-size: 10px; color: #8a92a3; }
+
+        /* КНОПКА ПРОДАТЬ ВСЁ */
+        .btn-sell-all {
+            background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);
+            border: none;
+            color: #fff;
+            padding: 11px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(220,53,69,0.35);
+        }
+        .btn-sell-all:hover { background: linear-gradient(135deg, #e74c5c 0%, #c0392b 100%); transform: translateY(-1px); }
+        .btn-sell-all:active { transform: translateY(0); }
+        .btn-sell-all:disabled { background: #4a4f5d; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* МОДАЛКА ПОДТВЕРЖДЕНИЯ */
+        .confirm-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75); z-index: 3000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .confirm-modal-box {
+            background: #232730;
+            border: 1px solid #3a3f4d;
+            border-radius: 16px;
+            padding: 30px 28px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            text-align: center;
+        }
+        .confirm-modal-icon { font-size: 52px; margin-bottom: 12px; }
+        .confirm-modal-title { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+        .confirm-modal-text { color: #8a92a3; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+        .confirm-modal-total { font-size: 22px; font-weight: bold; color: #28a745; margin-bottom: 24px; }
+        .confirm-modal-btns { display: flex; gap: 12px; justify-content: center; }
+        .confirm-btn-yes { background: #dc3545; border: none; color: #fff; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+        .confirm-btn-yes:hover { background: #bd2130; }
+        .confirm-btn-no { background: #3a3f4d; border: none; color: #c6d4df; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+        .confirm-btn-no:hover { background: #4a5060; }
+
     </style>
 </head>
 <body>
@@ -1182,7 +1455,7 @@
 
     <header>
         <div class="logo-area">
-            <div class="logo">PAPA<span>drop</span></div>
+            <div class="logo" onclick="switchPage('cases'); returnToCasesList();" style="cursor:pointer;" title="На главную">PAPA<span>drop</span></div>
             <div class="online-counter">
                 <span class="online-dot"></span>
                 <span>Онлайн: <span id="liveOnlineVal">1</span></span>
@@ -1201,6 +1474,38 @@
                 <div class="balance-box bonus">Монеты: <span id="ui-bonus" style="color: #00e5ff; font-weight: bold;">500</span> 🪙</div>
             </div>
             <!-- STEAM ВХОД -->
+            <!-- КНОПКА ПРОФИЛЯ -->
+            <button class="btn-profile-trigger" onclick="toggleProfilePanel()" title="Профиль">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                Профиль
+            </button>
+            <!-- ПАНЕЛЬ ПРОФИЛЯ -->
+            <div class="profile-panel" id="profilePanel" style="display:none;">
+                <div class="profile-panel-header">
+                    <span>👤 Мой профиль</span>
+                    <button class="profile-close-btn" onclick="toggleProfilePanel()">✕</button>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-title">📊 Реквизиты</div>
+                    <div class="profile-row"><span>Никнейм:</span><span id="profileNickname">Гость</span></div>
+                    <div class="profile-row"><span>Баланс:</span><span id="profileBalance" style="color:#28a745;">— ₽</span></div>
+                    <div class="profile-row"><span>Монеты:</span><span id="profileCoins" style="color:#00e5ff;">— 🪙</span></div>
+                    <div class="profile-row"><span>Трейд-ссылка:</span><span id="profileTradeUrl" style="font-size:10px; color:#8a92a3;">не сохранена</span></div>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-title">📦 Открытые кейсы</div>
+                    <div id="profileRecentCases" class="profile-recent-list">
+                        <div style="color:#8a92a3; font-size:12px;">Кейсы ещё не открывались</div>
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-title">🔥 Интересный дроп</div>
+                    <div id="profileBestDrop" class="profile-drop-card">
+                        <div style="color:#8a92a3; font-size:12px;">Откройте кейс, чтобы увидеть дроп</div>
+                    </div>
+                </div>
+            </div>
+
             <div id="steamLoginBtn">
                 <button class="btn-steam-login" onclick="steamLogin()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="#66c0f4"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38l3.02-6.24a3.5 3.5 0 0 1-1.02-2.44 3.5 3.5 0 0 1 3.5-3.5 3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5h-.16l-6.13 2.97C8.94 21.6 10.42 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -1278,6 +1583,7 @@
                                 <button class="multi-btn" onclick="setMultiCount(3,this)">3</button>
                                 <button class="multi-btn" onclick="setMultiCount(4,this)">4</button>
                                 <button class="multi-btn" onclick="setMultiCount(5,this)">5</button>
+                                <button class="multi-btn" onclick="setMultiCount(10,this)">10</button>
                             </div>
                         </div>
                         <div class="roulettes-stack" id="roulettesStack">
@@ -1392,7 +1698,7 @@
             <div id="page-contracts" class="page">
                 <div class="section-title">Контракты обмена (выбрано: <span id="contractCount">0</span>/10)</div>
                 <div class="upgrade-grid">
-                    <div class="upgrade-side" style="grid-column: span 2;">
+                    <div class="upgrade-side upgrade-side-full">
                         <h3 style="font-size:14px; margin-bottom:10px;">Выберите от 3 до 10 скинов для контракта:</h3>
                         <div class="upgrade-selector-list" id="contractInventory" style="grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); max-height: 380px;"></div>
                     </div>
@@ -1465,7 +1771,7 @@
                 </div>
 
                 <div class="upgrade-grid">
-                    <div class="upgrade-side" style="grid-column: span 2;">
+                    <div class="upgrade-side upgrade-side-full">
                         <h3 style="font-size:14px; margin-bottom:10px;">Выберите скин для отправки в Steam:</h3>
                         <div class="upgrade-selector-list" id="withdrawInventory" style="max-height: 420px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));"></div>
                     </div>
@@ -1479,11 +1785,30 @@
             </div>
 
             <div id="page-inventory" class="page">
-                <div class="section-title">Ваш инвентарь предметов</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:4px;">
+                    <div class="section-title" style="margin-bottom:0;">Ваш инвентарь предметов</div>
+                    <button class="btn-sell-all" id="sellAllBtn" onclick="openSellAllModal()" disabled>
+                        💰 Продать весь инвентарь
+                    </button>
+                </div>
                 <div class="inventory-grid" id="inventoryGrid"></div>
             </div>
 
         </main>
+
+        <!-- МОДАЛ ПОДТВЕРЖДЕНИЯ ПРОДАЖИ ВСЕГО -->
+        <div class="confirm-modal-overlay" id="sellAllModal">
+            <div class="confirm-modal-box">
+                <div class="confirm-modal-icon">💸</div>
+                <div class="confirm-modal-title">Продать весь инвентарь?</div>
+                <div class="confirm-modal-text">Все предметы будут проданы безвозвратно. Деньги зачислятся на баланс.</div>
+                <div class="confirm-modal-total" id="sellAllTotalDisplay">0 ₽</div>
+                <div class="confirm-modal-btns">
+                    <button class="confirm-btn-yes" onclick="confirmSellAll()">✅ Продать всё</button>
+                    <button class="confirm-btn-no" onclick="closeSellAllModal()">Отмена</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ОВЕРЛЕЙ РЕЗУЛЬТАТА АПГРЕЙДА -->
@@ -1633,7 +1958,7 @@
         let isSpinning = false;
         let multiCount = 1;
         
-        let isVerified = false;
+        let isVerified = true;
         let selectedPaymentMethodId = 'sbp'; // Метод по умолчанию
 
         let stats = { totalCases: 0, totalUpgrades: 0, totalWithdrawn: 0, maxDrop: 0 };
@@ -1956,6 +2281,11 @@ function _doSpin() {
 
     const winningItems = [];
     // Предрассчитываем победителей и подставляем в трек ДО запуска таймеров
+    // Для каждой рулетки — своя случайная позиция победителя (37..52)
+    const winPositions = [];
+    for (let i = 0; i < multiCount; i++) {
+        winPositions.push(38 + Math.floor(Math.random() * 14)); // 38..51
+    }
     for (let i = 0; i < multiCount; i++) {
         const track = document.getElementById(`rouletteTrack_${i}`);
         if (!track) continue;
@@ -1964,8 +2294,8 @@ function _doSpin() {
         const winningItem = globalSkins.find(s => s.id === winItemId);
         winningItems.push(winningItem);
 
-        // Вставляем победителя на фиксированную позицию 45
-        const targetCard = track.children[45];
+        // Вставляем победителя на рандомную позицию
+        const targetCard = track.children[winPositions[i]];
         if (targetCard) {
             targetCard.className = `item-card rarity-${winningItem.rarity}`;
             targetCard.innerHTML = `
@@ -1980,8 +2310,8 @@ function _doSpin() {
     const spinDuration = quickSpinMode ? 1.8 : 9.5;
     // Кривая: мгновенный старт → очень плавное торможение в конце
     const easingFn = quickSpinMode
-        ? 'cubic-bezier(0.12, 0, 0.2, 1)'
-        : 'cubic-bezier(0.02, 0, 0.03, 1)';
+        ? 'cubic-bezier(0.25, 0.1, 0.25, 1)'
+        : 'cubic-bezier(0.1, 0.57, 0.1, 1)';
 
     for (let i = 0; i < multiCount; i++) {
         const delay = quickSpinMode ? 0 : i * 80;
@@ -2006,9 +2336,9 @@ function _doSpin() {
                 ? windowEl.getBoundingClientRect().width
                 : 560;
 
-            // Центр карточки #45 → центр окна (= линия указателя)
-            // targetOffset = левый край карточки 45 - (половина окна - половина карточки)
-            const targetOffset = (45 * realCardWidth)
+            // Центр карточки по позиции победителя → центр окна (= линия указателя)
+            const winPos = winPositions[trackIdx];
+            const targetOffset = (winPos * realCardWidth)
                                 - (realWindowWidth / 2)
                                 + (realCardWidth / 2);
 
@@ -2028,14 +2358,14 @@ function _doSpin() {
     // Общая длительность: время анимации последней рулетки + задержка старта + буфер
     const totalDuration = (spinDuration + (multiCount - 1) * 0.06) * 1000
                         + (quickSpinMode ? 0 : 80 * (multiCount - 1))
-                        + 600;
+                        + 900;
 
     const resultTimer = setTimeout(() => {
         // Подсвечиваем выигрышные карточки под указателем
         for (let i = 0; i < multiCount; i++) {
             const track = document.getElementById(`rouletteTrack_${i}`);
             if (track) {
-                const targetCard = track.children[45];
+                const targetCard = track.children[winPositions[i]];
                 if (targetCard) {
                     targetCard.style.boxShadow = '0 0 18px 4px #ffb700, inset 0 0 10px rgba(255,183,0,0.3)';
                     targetCard.style.zIndex = '5';
@@ -2048,6 +2378,9 @@ function _doSpin() {
             stats.totalCases++;
             if (winningItem.price > stats.maxDrop) stats.maxDrop = winningItem.price;
             addDropToFeed(winningItem, true);
+            // Записываем в историю профиля
+            const caseName = casesData.find(x => x.id === currentCaseId)?.name || 'Кейс';
+            recordCaseOpen(caseName, winningItem);
         });
 
         renderInventory();
@@ -2604,10 +2937,15 @@ function _doSpin() {
 
             stats.totalUpgrades++;
 
-            const safeOffset = 8;
+            // Победная зона: от 0° до winAngle (= totalChance/100 * 360°), начиная с -90°
+            // Проигрышная зона: от winAngle до 360°
+            // Стрелка смотрит вверх (270° в CSS = -90°), колесо вращается
+            // Финальный угол — случайная точка внутри нужной зоны, с отступом 5% от краёв
+            const winZoneDeg = (totalChance / 100) * 360;
+            const safeMargin = Math.min(10, winZoneDeg * 0.1); // отступ от границ
             const finalAngle = isWin
-                ? 360 - ((totalChance / 100) * 180) + safeOffset
-                : 360 - ((totalChance / 100) * 360) - 25;
+                ? -(winZoneDeg * 0.05 + Math.random() * (winZoneDeg * 0.90)) // случайно внутри зелёной зоны
+                : -(winZoneDeg + safeMargin + Math.random() * (360 - winZoneDeg - safeMargin * 2)); // случайно внутри красной зоны
 
             const wheelTotalDuration = isQuick ? 3500 : (7000 + Math.random() * 3000);
             const targetRotation = (360 * (isQuick ? 8 : 16)) + finalAngle;
@@ -2917,8 +3255,10 @@ function _doSpin() {
             const grid = document.getElementById('inventoryGrid');
             if (!grid) return;
 
-            // Если вкладка инвентаря неактивна — не перерисовываем DOM зря,
-            // но при активации вкладки renderInventory будет вызван снова
+            // Кнопка продажи всего
+            const sellAllBtn = document.getElementById('sellAllBtn');
+            if (sellAllBtn) sellAllBtn.disabled = userInventory.length === 0;
+
             grid.innerHTML = '';
 
             if (userInventory.length === 0) {
@@ -2932,7 +3272,7 @@ function _doSpin() {
                 card.style.borderBottomColor = getRarityColor(item.rarity);
 
                 card.innerHTML = `
-                    <div class="inv-name" title="${item.weapon} | ${item.skin}">${item.weapon}</div>
+                    <div class="inv-name" title="${item.weapon} | ${item.skin}">${item.weapon} | ${item.skin}</div>
                     <div class="inv-price">${item.price} ₽</div>
                     <img src="${item.img}" alt="скин">
                     <button class="btn-sell" onclick="sellItem(${item.uid})">Продать</button>
@@ -3268,6 +3608,105 @@ function _doSpin() {
             toast.classList.add('show');
             if (toastTimeout) clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // --- ПРОФИЛЬ ---
+        let recentCasesHistory = [];
+        let bestDrop = null;
+
+        function toggleProfilePanel() {
+            const panel = document.getElementById('profilePanel');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) updateProfilePanel();
+        }
+
+        function updateProfilePanel() {
+            // Никнейм
+            const nick = document.getElementById('steamNickname')?.textContent || 'Гость';
+            document.getElementById('profileNickname').textContent = steamLoggedIn ? nick : 'Гость (не авторизован)';
+            // Баланс
+            document.getElementById('profileBalance').textContent = balance.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('profileCoins').textContent = bonusBalance.toLocaleString('ru-RU') + ' 🪙';
+            // Трейд-ссылка
+            const tradeEl = document.getElementById('profileTradeUrl');
+            if (savedTradeUrl) {
+                const short = savedTradeUrl.substring(0, 40) + '…';
+                tradeEl.textContent = short;
+                tradeEl.style.color = '#28a745';
+            } else {
+                tradeEl.textContent = 'не сохранена';
+                tradeEl.style.color = '#8a92a3';
+            }
+            // Последние кейсы
+            const casesList = document.getElementById('profileRecentCases');
+            if (recentCasesHistory.length === 0) {
+                casesList.innerHTML = '<div style="color:#8a92a3; font-size:12px;">Кейсы ещё не открывались</div>';
+            } else {
+                casesList.innerHTML = recentCasesHistory.slice(-6).reverse().map(entry => `
+                    <div class="profile-case-entry">
+                        <span class="profile-case-name">${entry.caseName}</span>
+                        <span class="profile-case-time">${entry.time}</span>
+                    </div>
+                `).join('');
+            }
+            // Лучший дроп
+            const dropEl = document.getElementById('profileBestDrop');
+            if (!bestDrop) {
+                dropEl.innerHTML = '<div style="color:#8a92a3; font-size:12px;">Откройте кейс, чтобы увидеть дроп</div>';
+            } else {
+                const rarityColors = { common:'#b0c3d9', uncommon:'#5e98d9', restricted:'#8847ff', classified:'#d32ce6', covert:'#eb4b4b', gold:'#ffb700' };
+                const color = rarityColors[bestDrop.rarity] || '#fff';
+                dropEl.innerHTML = `
+                    <img src="${bestDrop.img}" alt="дроп">
+                    <div class="profile-drop-info">
+                        <div class="profile-drop-name" style="color:${color};">${bestDrop.weapon} | ${bestDrop.skin}</div>
+                        <div class="profile-drop-price">${bestDrop.price.toLocaleString('ru-RU')} ₽</div>
+                        <div class="profile-drop-rarity">Из: ${bestDrop.fromCase || '—'}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function recordCaseOpen(caseName, droppedItem) {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            recentCasesHistory.push({ caseName, time });
+            if (recentCasesHistory.length > 20) recentCasesHistory.shift();
+            if (!bestDrop || droppedItem.price > bestDrop.price) {
+                bestDrop = { ...droppedItem, fromCase: caseName };
+            }
+        }
+
+        // Закрыть панель профиля при клике вне
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('profilePanel');
+            const trigger = document.querySelector('.btn-profile-trigger');
+            if (panel && panel.style.display === 'block') {
+                if (!panel.contains(e.target) && !trigger.contains(e.target)) {
+                    panel.style.display = 'none';
+                }
+            }
+        });
+
+        // --- ПРОДАТЬ ВЕСЬ ИНВЕНТАРЬ ---
+        function openSellAllModal() {
+            const total = userInventory.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('sellAllTotalDisplay').textContent = '+' + total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('sellAllModal').style.display = 'flex';
+        }
+
+        function closeSellAllModal() {
+            document.getElementById('sellAllModal').style.display = 'none';
+        }
+
+        function confirmSellAll() {
+            const total = userInventory.reduce((sum, item) => sum + item.price, 0);
+            balance += total;
+            userInventory.splice(0, userInventory.length);
+            closeSellAllModal();
+            renderInventory();
+            updateBalancesUI();
         }
 
         // --- ПЕРВИЧНЫЙ ЗАПУСК ---
